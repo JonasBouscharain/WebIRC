@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Socket.io</title>
+    </head>
+ 
+    <body>
+        <h1>OP CHAT</h1>
+
+        <div id='chat-msg' style='width:100%;heigth:80%'></div>
+        <form id="form-msg">
+            <input type='text' placeholder='Entrez votre message ...' id="send-msg" style='width:80%'/>
+            <input type='submit' value='Envoyer !' id='btn-send' style='width:15%'/>
+        </form>
+        
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io.connect('http://localhost:8080');
+
+            var pseudo = prompt('Quel est votre pseudo ?');
+            socket.emit("new", pseudo);
+
+            socket.on('message', function(message){
+                document.getElementById('chat-msg').innerHTML = (document.getElementById('chat-msg').innerHTML+message+"\n");
+            })
+
+            document.getElementById('form-msg').onsubmit = function(){
+                socket.emit('message', document.getElementById('send-msg').value);
+                document.getElementById('send-msg').value = "";
+                return false;
+            }
+        </script>
+    </body>
+</html>

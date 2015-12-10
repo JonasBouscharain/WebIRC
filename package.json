@@ -1,0 +1,33 @@
+{
+  "name": "WebIRC",
+  "version": "0.0.0",
+  "description": "Amazing IRC app.",
+  "main": "server.js",
+  "dependencies": {
+    "babel-preset-react": "^6.3.13",
+    "babelify": "^7.2.0",
+    "body-parser": "^1.4.3",
+    "express": "^4.4.5",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
+    "material-ui": "^0.14.0-rc1",
+    "socket.io": "^1.3.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JonasBouscharain/WebIRC.git"
+  },
+  "author": "Jonas Bouscharain",
+  "bugs": {
+    "url": "https://github.com/JonasBouscharain/WebIRC/issues"
+  },
+  "homepage": "https://github.com/JonasBouscharain/WebIRC",
+  "engines": {
+    "node": "0.12.x"
+  }
+}

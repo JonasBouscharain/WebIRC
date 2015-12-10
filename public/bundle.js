@@ -95,64 +95,32 @@ process.umask = function() { return 0; };
 (function (process){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var _react = require('react');
+var React = require('react');
+var StylePropable = require('./mixins/style-propable');
+var Typography = require('./styles/typography');
+var IconButton = require('./icon-button');
+var NavigationMenu = require('./svg-icons/navigation/menu');
+var DefaultRawTheme = require('./styles/raw-themes/light-raw-theme');
+var ThemeManager = require('./styles/theme-manager');
+var Paper = require('./paper');
+var PropTypes = require('./utils/prop-types');
 
-var _react2 = _interopRequireDefault(_react);
-
-var _mixinsStylePropable = require('./mixins/style-propable');
-
-var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-
-var _stylesTypography = require('./styles/typography');
-
-var _stylesTypography2 = _interopRequireDefault(_stylesTypography);
-
-var _iconButton = require('./icon-button');
-
-var _iconButton2 = _interopRequireDefault(_iconButton);
-
-var _svgIconsNavigationMenu = require('./svg-icons/navigation/menu');
-
-var _svgIconsNavigationMenu2 = _interopRequireDefault(_svgIconsNavigationMenu);
-
-var _stylesRawThemesLightRawTheme = require('./styles/raw-themes/light-raw-theme');
-
-var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-
-var _stylesThemeManager = require('./styles/theme-manager');
-
-var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
-
-var _paper = require('./paper');
-
-var _paper2 = _interopRequireDefault(_paper);
-
-var _utilsPropTypes = require('./utils/prop-types');
-
-var _utilsPropTypes2 = _interopRequireDefault(_utilsPropTypes);
-
-var AppBar = _react2['default'].createClass({
+var AppBar = React.createClass({
   displayName: 'AppBar',
 
-  mixins: [_mixinsStylePropable2['default']],
+  mixins: [StylePropable],
 
   contextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   //for passing default theme context to children
   childContextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   getChildContext: function getChildContext() {
@@ -162,26 +130,23 @@ var AppBar = _react2['default'].createClass({
   },
 
   propTypes: {
-    children: _react2['default'].PropTypes.node,
-    className: _react2['default'].PropTypes.string,
-    iconClassNameLeft: _react2['default'].PropTypes.string,
-    iconClassNameRight: _react2['default'].PropTypes.string,
-    iconElementLeft: _react2['default'].PropTypes.element,
-    iconElementRight: _react2['default'].PropTypes.element,
-    iconStyleRight: _react2['default'].PropTypes.object,
-    onLeftIconButtonTouchTap: _react2['default'].PropTypes.func,
-    onRightIconButtonTouchTap: _react2['default'].PropTypes.func,
-    onTitleTouchTap: _react2['default'].PropTypes.func,
-    showMenuIconButton: _react2['default'].PropTypes.bool,
-    style: _react2['default'].PropTypes.object,
-    title: _react2['default'].PropTypes.node,
-    titleStyle: _react2['default'].PropTypes.object,
-    zDepth: _utilsPropTypes2['default'].zDepth
+    onLeftIconButtonTouchTap: React.PropTypes.func,
+    onRightIconButtonTouchTap: React.PropTypes.func,
+    onTitleTouchTap: React.PropTypes.func,
+    showMenuIconButton: React.PropTypes.bool,
+    style: React.PropTypes.object,
+    iconClassNameLeft: React.PropTypes.string,
+    iconClassNameRight: React.PropTypes.string,
+    iconElementLeft: React.PropTypes.element,
+    iconElementRight: React.PropTypes.element,
+    iconStyleRight: React.PropTypes.object,
+    title: React.PropTypes.node,
+    zDepth: PropTypes.zDepth
   },
 
   getInitialState: function getInitialState() {
     return {
-      muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])
+      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
     };
   },
 
@@ -222,7 +187,7 @@ var AppBar = _react2['default'].createClass({
         position: 'relative',
         zIndex: 5,
         width: '100%',
-        display: 'flex',
+        display: '-webkit-box; display: -webkit-flex; display: flex',
         minHeight: themeVariables.height,
         backgroundColor: themeVariables.color,
         paddingLeft: spacing.desktopGutter,
@@ -236,7 +201,7 @@ var AppBar = _react2['default'].createClass({
         paddingTop: 0,
         letterSpacing: 0,
         fontSize: 24,
-        fontWeight: _stylesTypography2['default'].fontWeightNormal,
+        fontWeight: Typography.fontWeightNormal,
         color: themeVariables.textColor,
         lineHeight: themeVariables.height + 'px'
       },
@@ -268,7 +233,6 @@ var AppBar = _react2['default'].createClass({
   render: function render() {
     var _props = this.props;
     var title = _props.title;
-    var titleStyle = _props.titleStyle;
     var iconStyleRight = _props.iconStyleRight;
     var showMenuIconButton = _props.showMenuIconButton;
     var iconElementLeft = _props.iconElementLeft;
@@ -280,7 +244,7 @@ var AppBar = _react2['default'].createClass({
     var zDepth = _props.zDepth;
     var children = _props.children;
 
-    var other = _objectWithoutProperties(_props, ['title', 'titleStyle', 'iconStyleRight', 'showMenuIconButton', 'iconElementLeft', 'iconElementRight', 'iconClassNameLeft', 'iconClassNameRight', 'className', 'style', 'zDepth', 'children']);
+    var other = _objectWithoutProperties(_props, ['title', 'iconStyleRight', 'showMenuIconButton', 'iconElementLeft', 'iconElementRight', 'iconClassNameLeft', 'iconClassNameRight', 'className', 'style', 'zDepth', 'children']);
 
     var menuElementLeft = undefined;
     var menuElementRight = undefined;
@@ -294,13 +258,13 @@ var AppBar = _react2['default'].createClass({
     if (title) {
       // If the title is a string, wrap in an h1 tag.
       // If not, just use it as a node.
-      titleElement = typeof title === 'string' || title instanceof String ? _react2['default'].createElement(
+      titleElement = typeof title === 'string' || title instanceof String ? React.createElement(
         'h1',
-        { onTouchTap: this._onTitleTouchTap, style: this.prepareStyles(styles.title, styles.mainElement, titleStyle) },
+        { onTouchTap: this._onTitleTouchTap, style: this.prepareStyles(styles.title, styles.mainElement) },
         title
-      ) : _react2['default'].createElement(
+      ) : React.createElement(
         'div',
-        { onTouchTap: this._onTitleTouchTap, style: this.prepareStyles(styles.title, styles.mainElement, titleStyle) },
+        { onTouchTap: this._onTitleTouchTap, style: this.prepareStyles(styles.title, styles.mainElement) },
         title
       );
     }
@@ -309,21 +273,21 @@ var AppBar = _react2['default'].createClass({
       if (iconElementLeft) {
         switch (iconElementLeft.type.displayName) {
           case 'IconButton':
-            iconElementLeft = _react2['default'].cloneElement(iconElementLeft, {
+            iconElementLeft = React.cloneElement(iconElementLeft, {
               iconStyle: this.mergeStyles(styles.iconButton.iconStyle)
             });
             break;
         }
 
-        menuElementLeft = _react2['default'].createElement(
+        menuElementLeft = React.createElement(
           'div',
           { style: this.prepareStyles(styles.iconButton.style) },
           iconElementLeft
         );
       } else {
-        var child = iconClassNameLeft ? '' : _react2['default'].createElement(_svgIconsNavigationMenu2['default'], { style: this.mergeStyles(styles.iconButton.iconStyle) });
-        menuElementLeft = _react2['default'].createElement(
-          _iconButton2['default'],
+        var child = iconClassNameLeft ? '' : React.createElement(NavigationMenu, { style: this.mergeStyles(styles.iconButton.iconStyle) });
+        menuElementLeft = React.createElement(
+          IconButton,
           {
             style: this.mergeStyles(styles.iconButton.style),
             iconStyle: this.mergeStyles(styles.iconButton.iconStyle),
@@ -338,33 +302,33 @@ var AppBar = _react2['default'].createClass({
       switch (iconElementRight.type.displayName) {
         case 'IconMenu':
         case 'IconButton':
-          iconElementRight = _react2['default'].cloneElement(iconElementRight, {
+          iconElementRight = React.cloneElement(iconElementRight, {
             iconStyle: this.mergeStyles(styles.iconButton.iconStyle)
           });
           break;
 
         case 'FlatButton':
-          iconElementRight = _react2['default'].cloneElement(iconElementRight, {
+          iconElementRight = React.cloneElement(iconElementRight, {
             style: this.mergeStyles(styles.flatButton, iconElementRight.props.style)
           });
           break;
       }
 
-      menuElementRight = _react2['default'].createElement(
+      menuElementRight = React.createElement(
         'div',
         { style: this.prepareStyles(iconRightStyle) },
         iconElementRight
       );
     } else if (iconClassNameRight) {
-      menuElementRight = _react2['default'].createElement(_iconButton2['default'], {
+      menuElementRight = React.createElement(IconButton, {
         style: iconRightStyle,
         iconStyle: this.mergeStyles(styles.iconButton.iconStyle),
         iconClassName: iconClassNameRight,
         onTouchTap: this._onRightIconButtonTouchTap });
     }
 
-    return _react2['default'].createElement(
-      _paper2['default'],
+    return React.createElement(
+      Paper,
       _extends({}, other, {
         rounded: false,
         className: className,
@@ -397,65 +361,26 @@ var AppBar = _react2['default'].createClass({
 
 });
 
-exports['default'] = AppBar;
-module.exports = exports['default'];
+module.exports = AppBar;
 }).call(this,require('_process'))
 },{"./icon-button":5,"./mixins/style-propable":11,"./paper":12,"./styles/raw-themes/light-raw-theme":19,"./styles/theme-manager":21,"./styles/typography":23,"./svg-icons/navigation/menu":27,"./utils/prop-types":38,"_process":1,"react":223}],3:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactAddonsPureRenderMixin = require('react-addons-pure-render-mixin');
-
-var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
-
-var _mixinsStylePropable = require('./mixins/style-propable');
-
-var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-
-var _stylesColors = require('./styles/colors');
-
-var _stylesColors2 = _interopRequireDefault(_stylesColors);
-
-var _utilsChildren = require('./utils/children');
-
-var _utilsChildren2 = _interopRequireDefault(_utilsChildren);
-
-var _utilsEvents = require('./utils/events');
-
-var _utilsEvents2 = _interopRequireDefault(_utilsEvents);
-
-var _utilsKeyCode = require('./utils/key-code');
-
-var _utilsKeyCode2 = _interopRequireDefault(_utilsKeyCode);
-
-var _ripplesFocusRipple = require('./ripples/focus-ripple');
-
-var _ripplesFocusRipple2 = _interopRequireDefault(_ripplesFocusRipple);
-
-var _ripplesTouchRipple = require('./ripples/touch-ripple');
-
-var _ripplesTouchRipple2 = _interopRequireDefault(_ripplesTouchRipple);
-
-var _stylesRawThemesLightRawTheme = require('./styles/raw-themes/light-raw-theme');
-
-var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-
-var _stylesThemeManager = require('./styles/theme-manager');
-
-var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
+var React = require('react');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
+var StylePropable = require('./mixins/style-propable');
+var Colors = require('./styles/colors');
+var Children = require('./utils/children');
+var Events = require('./utils/events');
+var KeyCode = require('./utils/key-code');
+var FocusRipple = require('./ripples/focus-ripple');
+var TouchRipple = require('./ripples/touch-ripple');
+var DefaultRawTheme = require('./styles/raw-themes/light-raw-theme');
+var ThemeManager = require('./styles/theme-manager');
 
 var styleInjected = false;
 var listening = false;
@@ -464,7 +389,7 @@ var tabPressed = false;
 function injectStyle() {
   if (!styleInjected) {
     // Remove inner padding and border in Firefox 4+.
-    var style = document.createElement('style');
+    var style = document.createElement("style");
     style.innerHTML = '\n      button::-moz-focus-inner,\n      input::-moz-focus-inner {\n        border: 0;\n        padding: 0;\n      }\n    ';
 
     document.body.appendChild(style);
@@ -474,25 +399,25 @@ function injectStyle() {
 
 function listenForTabPresses() {
   if (!listening) {
-    _utilsEvents2['default'].on(window, 'keydown', function (e) {
-      tabPressed = e.keyCode === _utilsKeyCode2['default'].TAB;
+    Events.on(window, 'keydown', function (e) {
+      tabPressed = e.keyCode === KeyCode.TAB;
     });
     listening = true;
   }
 }
 
-var EnhancedButton = _react2['default'].createClass({
+var EnhancedButton = React.createClass({
   displayName: 'EnhancedButton',
 
-  mixins: [_reactAddonsPureRenderMixin2['default'], _mixinsStylePropable2['default']],
+  mixins: [PureRenderMixin, StylePropable],
 
   contextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   //for passing default theme context to children
   childContextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   getChildContext: function getChildContext() {
@@ -502,28 +427,26 @@ var EnhancedButton = _react2['default'].createClass({
   },
 
   propTypes: {
-    centerRipple: _react2['default'].PropTypes.bool,
-    children: _react2['default'].PropTypes.node,
-    containerElement: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.string, _react2['default'].PropTypes.element]),
-    disableFocusRipple: _react2['default'].PropTypes.bool,
-    disableKeyboardFocus: _react2['default'].PropTypes.bool,
-    disableTouchRipple: _react2['default'].PropTypes.bool,
-    disabled: _react2['default'].PropTypes.bool,
-    focusRippleColor: _react2['default'].PropTypes.string,
-    focusRippleOpacity: _react2['default'].PropTypes.number,
-    keyboardFocused: _react2['default'].PropTypes.bool,
-    linkButton: _react2['default'].PropTypes.bool,
-    onBlur: _react2['default'].PropTypes.func,
-    onFocus: _react2['default'].PropTypes.func,
-    onKeyDown: _react2['default'].PropTypes.func,
-    onKeyUp: _react2['default'].PropTypes.func,
-    onKeyboardFocus: _react2['default'].PropTypes.func,
-    onTouchTap: _react2['default'].PropTypes.func,
-    style: _react2['default'].PropTypes.object,
-    tabIndex: _react2['default'].PropTypes.number,
-    touchRippleColor: _react2['default'].PropTypes.string,
-    touchRippleOpacity: _react2['default'].PropTypes.number,
-    type: _react2['default'].PropTypes.string
+    centerRipple: React.PropTypes.bool,
+    containerElement: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.element]),
+    disabled: React.PropTypes.bool,
+    disableFocusRipple: React.PropTypes.bool,
+    disableKeyboardFocus: React.PropTypes.bool,
+    disableTouchRipple: React.PropTypes.bool,
+    keyboardFocused: React.PropTypes.bool,
+    linkButton: React.PropTypes.bool,
+    focusRippleColor: React.PropTypes.string,
+    touchRippleColor: React.PropTypes.string,
+    focusRippleOpacity: React.PropTypes.number,
+    touchRippleOpacity: React.PropTypes.number,
+    onBlur: React.PropTypes.func,
+    onFocus: React.PropTypes.func,
+    onKeyboardFocus: React.PropTypes.func,
+    onKeyDown: React.PropTypes.func,
+    onKeyUp: React.PropTypes.func,
+    onTouchTap: React.PropTypes.func,
+    tabIndex: React.PropTypes.number,
+    style: React.PropTypes.object
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -543,7 +466,7 @@ var EnhancedButton = _react2['default'].createClass({
   getInitialState: function getInitialState() {
     return {
       isKeyboardFocused: !this.props.disabled && this.props.keyboardFocused && !this.props.disableKeyboardFocus,
-      muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])
+      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
     };
   },
 
@@ -596,7 +519,7 @@ var EnhancedButton = _react2['default'].createClass({
       display: 'inline-block',
       font: 'inherit',
       fontFamily: this.state.muiTheme.rawTheme.fontFamily,
-      tapHighlightColor: _stylesColors2['default'].transparent,
+      tapHighlightColor: Colors.transparent,
       appearance: linkButton ? null : 'button',
       cursor: disabled ? 'default' : 'pointer',
       textDecoration: 'none',
@@ -604,7 +527,7 @@ var EnhancedButton = _react2['default'].createClass({
     }, style);
 
     if (disabled && linkButton) {
-      return _react2['default'].createElement(
+      return React.createElement(
         'span',
         _extends({}, other, {
           style: mergedStyles }),
@@ -625,7 +548,7 @@ var EnhancedButton = _react2['default'].createClass({
     });
     var buttonChildren = this._createButtonChildren();
 
-    return _react2['default'].isValidElement(containerElement) ? _react2['default'].cloneElement(containerElement, buttonProps, buttonChildren) : _react2['default'].createElement(linkButton ? 'a' : containerElement, buttonProps, buttonChildren);
+    return React.isValidElement(containerElement) ? React.cloneElement(containerElement, buttonProps, buttonChildren) : React.createElement(linkButton ? 'a' : containerElement, buttonProps, buttonChildren);
   },
 
   isKeyboardFocused: function isKeyboardFocused() {
@@ -668,15 +591,15 @@ var EnhancedButton = _react2['default'].createClass({
     var isKeyboardFocused = this.state.isKeyboardFocused;
 
     //Focus Ripple
-    var focusRipple = isKeyboardFocused && !disabled && !disableFocusRipple && !disableKeyboardFocus ? _react2['default'].createElement(_ripplesFocusRipple2['default'], {
+    var focusRipple = isKeyboardFocused && !disabled && !disableFocusRipple && !disableKeyboardFocus ? React.createElement(FocusRipple, {
       color: focusRippleColor,
       opacity: focusRippleOpacity,
       show: isKeyboardFocused
     }) : undefined;
 
     //Touch Ripple
-    var touchRipple = !disabled && !disableTouchRipple ? _react2['default'].createElement(
-      _ripplesTouchRipple2['default'],
+    var touchRipple = !disabled && !disableTouchRipple ? React.createElement(
+      TouchRipple,
       {
         centerRipple: centerRipple,
         color: touchRippleColor,
@@ -684,7 +607,7 @@ var EnhancedButton = _react2['default'].createClass({
       children
     ) : undefined;
 
-    return _utilsChildren2['default'].create({
+    return Children.create({
       focusRipple: focusRipple,
       touchRipple: touchRipple,
       children: touchRipple ? undefined : children
@@ -693,7 +616,7 @@ var EnhancedButton = _react2['default'].createClass({
 
   _handleKeyDown: function _handleKeyDown(e) {
     if (!this.props.disabled && !this.props.disableKeyboardFocus) {
-      if (e.keyCode === _utilsKeyCode2['default'].ENTER && this.state.isKeyboardFocused) {
+      if (e.keyCode === KeyCode.ENTER && this.state.isKeyboardFocused) {
         this._handleTouchTap(e);
       }
     }
@@ -701,7 +624,7 @@ var EnhancedButton = _react2['default'].createClass({
   },
 
   _handleKeyUp: function _handleKeyUp(e) {
-    if (!this.props.disabled && e.keyCode === _utilsKeyCode2['default'].SPACE && this.state.isKeyboardFocused) {
+    if (!this.props.disabled && e.keyCode === KeyCode.SPACE && this.state.isKeyboardFocused) {
       this._handleTouchTap(e);
     }
     this.props.onKeyUp(e);
@@ -741,53 +664,32 @@ var EnhancedButton = _react2['default'].createClass({
 
 });
 
-exports['default'] = EnhancedButton;
-module.exports = exports['default'];
+module.exports = EnhancedButton;
 },{"./mixins/style-propable":11,"./ripples/focus-ripple":15,"./ripples/touch-ripple":16,"./styles/colors":18,"./styles/raw-themes/light-raw-theme":19,"./styles/theme-manager":21,"./utils/children":31,"./utils/events":34,"./utils/key-code":37,"react":223,"react-addons-pure-render-mixin":54}],4:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var _react = require('react');
+var React = require('react');
+var StylePropable = require('./mixins/style-propable');
+var Transitions = require('./styles/transitions');
+var DefaultRawTheme = require('./styles/raw-themes/light-raw-theme');
+var ThemeManager = require('./styles/theme-manager');
 
-var _react2 = _interopRequireDefault(_react);
-
-var _mixinsStylePropable = require('./mixins/style-propable');
-
-var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-
-var _stylesTransitions = require('./styles/transitions');
-
-var _stylesTransitions2 = _interopRequireDefault(_stylesTransitions);
-
-var _stylesRawThemesLightRawTheme = require('./styles/raw-themes/light-raw-theme');
-
-var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-
-var _stylesThemeManager = require('./styles/theme-manager');
-
-var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
-
-var FontIcon = _react2['default'].createClass({
+var FontIcon = React.createClass({
   displayName: 'FontIcon',
 
-  mixins: [_mixinsStylePropable2['default']],
+  mixins: [StylePropable],
 
   contextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   //for passing default theme context to children
   childContextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   getChildContext: function getChildContext() {
@@ -797,17 +699,17 @@ var FontIcon = _react2['default'].createClass({
   },
 
   propTypes: {
-    color: _react2['default'].PropTypes.string,
-    hoverColor: _react2['default'].PropTypes.string,
-    onMouseEnter: _react2['default'].PropTypes.func,
-    onMouseLeave: _react2['default'].PropTypes.func,
-    style: _react2['default'].PropTypes.object
+    color: React.PropTypes.string,
+    hoverColor: React.PropTypes.string,
+    onMouseLeave: React.PropTypes.func,
+    onMouseEnter: React.PropTypes.func,
+    style: React.PropTypes.object
   },
 
   getInitialState: function getInitialState() {
     return {
       hovered: false,
-      muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])
+      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
     };
   },
 
@@ -837,12 +739,12 @@ var FontIcon = _react2['default'].createClass({
       fontSize: spacing.iconSize,
       display: 'inline-block',
       userSelect: 'none',
-      transition: _stylesTransitions2['default'].easeOut()
+      transition: Transitions.easeOut()
     }, style, {
       color: this.state.hovered ? onColor : offColor
     });
 
-    return _react2['default'].createElement('span', _extends({}, other, {
+    return React.createElement('span', _extends({}, other, {
       onMouseLeave: this._handleMouseLeave,
       onMouseEnter: this._handleMouseEnter,
       style: mergedStyles }));
@@ -865,72 +767,33 @@ var FontIcon = _react2['default'].createClass({
   }
 });
 
-exports['default'] = FontIcon;
-module.exports = exports['default'];
+module.exports = FontIcon;
 },{"./mixins/style-propable":11,"./styles/raw-themes/light-raw-theme":19,"./styles/theme-manager":21,"./styles/transitions":22,"react":223}],5:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var _react = require('react');
+var React = require('react');
+var StylePropable = require('./mixins/style-propable');
+var ContextPure = require('./mixins/context-pure');
+var Transitions = require('./styles/transitions');
+var PropTypes = require('./utils/prop-types');
+var EnhancedButton = require('./enhanced-button');
+var FontIcon = require('./font-icon');
+var Tooltip = require('./tooltip');
+var Children = require('./utils/children');
+var DefaultRawTheme = require('./styles/raw-themes/light-raw-theme');
+var ThemeManager = require('./styles/theme-manager');
 
-var _react2 = _interopRequireDefault(_react);
-
-var _mixinsStylePropable = require('./mixins/style-propable');
-
-var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-
-var _mixinsContextPure = require('./mixins/context-pure');
-
-var _mixinsContextPure2 = _interopRequireDefault(_mixinsContextPure);
-
-var _stylesTransitions = require('./styles/transitions');
-
-var _stylesTransitions2 = _interopRequireDefault(_stylesTransitions);
-
-var _utilsPropTypes = require('./utils/prop-types');
-
-var _utilsPropTypes2 = _interopRequireDefault(_utilsPropTypes);
-
-var _enhancedButton = require('./enhanced-button');
-
-var _enhancedButton2 = _interopRequireDefault(_enhancedButton);
-
-var _fontIcon = require('./font-icon');
-
-var _fontIcon2 = _interopRequireDefault(_fontIcon);
-
-var _tooltip = require('./tooltip');
-
-var _tooltip2 = _interopRequireDefault(_tooltip);
-
-var _utilsChildren = require('./utils/children');
-
-var _utilsChildren2 = _interopRequireDefault(_utilsChildren);
-
-var _stylesRawThemesLightRawTheme = require('./styles/raw-themes/light-raw-theme');
-
-var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-
-var _stylesThemeManager = require('./styles/theme-manager');
-
-var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
-
-var IconButton = _react2['default'].createClass({
+var IconButton = React.createClass({
   displayName: 'IconButton',
 
-  mixins: [_mixinsStylePropable2['default'], _mixinsContextPure2['default']],
+  mixins: [StylePropable, ContextPure],
 
   contextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   statics: {
@@ -946,13 +809,13 @@ var IconButton = _react2['default'].createClass({
     },
 
     getChildrenClasses: function getChildrenClasses() {
-      return [_enhancedButton2['default'], _fontIcon2['default'], _tooltip2['default']];
+      return [EnhancedButton, FontIcon, Tooltip];
     }
   },
 
   //for passing default theme context to children
   childContextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   getChildContext: function getChildContext() {
@@ -962,27 +825,26 @@ var IconButton = _react2['default'].createClass({
   },
 
   propTypes: {
-    children: _react2['default'].PropTypes.node,
-    className: _react2['default'].PropTypes.string,
-    disabled: _react2['default'].PropTypes.bool,
-    iconClassName: _react2['default'].PropTypes.string,
-    iconStyle: _react2['default'].PropTypes.object,
-    onBlur: _react2['default'].PropTypes.func,
-    onFocus: _react2['default'].PropTypes.func,
-    onKeyboardFocus: _react2['default'].PropTypes.func,
-    onMouseEnter: _react2['default'].PropTypes.func,
-    onMouseLeave: _react2['default'].PropTypes.func,
-    style: _react2['default'].PropTypes.object,
-    tooltip: _react2['default'].PropTypes.node,
-    tooltipPosition: _utilsPropTypes2['default'].cornersAndCenter,
-    tooltipStyles: _react2['default'].PropTypes.object,
-    touch: _react2['default'].PropTypes.bool
+    className: React.PropTypes.string,
+    disabled: React.PropTypes.bool,
+    iconClassName: React.PropTypes.string,
+    iconStyle: React.PropTypes.object,
+    onBlur: React.PropTypes.func,
+    onFocus: React.PropTypes.func,
+    onKeyboardFocus: React.PropTypes.func,
+    tooltip: React.PropTypes.node,
+    tooltipStyles: React.PropTypes.object,
+    tooltipPosition: PropTypes.cornersAndCenter,
+    touch: React.PropTypes.bool,
+    style: React.PropTypes.object,
+    onMouseLeave: React.PropTypes.func,
+    onMouseEnter: React.PropTypes.func
   },
 
   getInitialState: function getInitialState() {
     return {
       tooltipShown: false,
-      muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])
+      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
     };
   },
 
@@ -1011,7 +873,7 @@ var IconButton = _react2['default'].createClass({
       root: {
         position: 'relative',
         boxSizing: 'border-box',
-        transition: _stylesTransitions2['default'].easeOut(),
+        transition: Transitions.easeOut(),
         padding: iconSize / 2,
         width: iconSize * 2,
         height: iconSize * 2,
@@ -1055,7 +917,7 @@ var IconButton = _react2['default'].createClass({
     var styles = this.getStyles();
     var tooltipPosition = this.props.tooltipPosition.split('-');
 
-    var tooltipElement = tooltip ? _react2['default'].createElement(_tooltip2['default'], {
+    var tooltipElement = tooltip ? React.createElement(Tooltip, {
       ref: 'tooltip',
       label: tooltip,
       show: this.state.tooltipShown,
@@ -1069,8 +931,8 @@ var IconButton = _react2['default'].createClass({
 
       var iconStyleFontIcon = _objectWithoutProperties(iconStyle, ['iconHoverColor']);
 
-      fonticon = _react2['default'].createElement(
-        _fontIcon2['default'],
+      fonticon = React.createElement(
+        FontIcon,
         {
           className: iconClassName,
           hoverColor: disabled ? null : iconHoverColor,
@@ -1081,8 +943,8 @@ var IconButton = _react2['default'].createClass({
 
     var childrenStyle = disabled ? this.mergeStyles(iconStyle, styles.disabled) : iconStyle;
 
-    return _react2['default'].createElement(
-      _enhancedButton2['default'],
+    return React.createElement(
+      EnhancedButton,
       _extends({}, other, {
         ref: 'button',
         centerRipple: true,
@@ -1095,7 +957,7 @@ var IconButton = _react2['default'].createClass({
         onKeyboardFocus: this._handleKeyboardFocus }),
       tooltipElement,
       fonticon,
-      _utilsChildren2['default'].extend(this.props.children, {
+      Children.extend(this.props.children, {
         style: childrenStyle
       })
     );
@@ -1106,7 +968,7 @@ var IconButton = _react2['default'].createClass({
   },
 
   _showTooltip: function _showTooltip() {
-    if (this.props.tooltip) {
+    if (!this.props.disabled && this.props.tooltip) {
       this.setState({ tooltipShown: true });
     }
   },
@@ -1149,54 +1011,36 @@ var IconButton = _react2['default'].createClass({
 
 });
 
-exports['default'] = IconButton;
-module.exports = exports['default'];
+module.exports = IconButton;
 },{"./enhanced-button":3,"./font-icon":4,"./mixins/context-pure":10,"./mixins/style-propable":11,"./styles/raw-themes/light-raw-theme":19,"./styles/theme-manager":21,"./styles/transitions":22,"./tooltip":28,"./utils/children":31,"./utils/prop-types":38,"react":223}],6:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var _react = require('react');
+var React = require('react');
+var StylePropable = require('../mixins/style-propable');
+var DefaultRawTheme = require('../styles/raw-themes/light-raw-theme');
+var ThemeManager = require('../styles/theme-manager');
 
-var _react2 = _interopRequireDefault(_react);
-
-var _mixinsStylePropable = require('../mixins/style-propable');
-
-var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-
-var _stylesRawThemesLightRawTheme = require('../styles/raw-themes/light-raw-theme');
-
-var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-
-var _stylesThemeManager = require('../styles/theme-manager');
-
-var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
-
-var ListDivider = _react2['default'].createClass({
+var ListDivider = React.createClass({
   displayName: 'ListDivider',
 
-  mixins: [_mixinsStylePropable2['default']],
+  mixins: [StylePropable],
 
   contextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   propTypes: {
-    inset: _react2['default'].PropTypes.bool,
-    style: _react2['default'].PropTypes.object
+    inset: React.PropTypes.bool,
+    style: React.PropTypes.object
   },
 
   //for passing default theme context to children
   childContextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   getChildContext: function getChildContext() {
@@ -1207,7 +1051,7 @@ var ListDivider = _react2['default'].createClass({
 
   getInitialState: function getInitialState() {
     return {
-      muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])
+      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
     };
   },
 
@@ -1234,127 +1078,75 @@ var ListDivider = _react2['default'].createClass({
       backgroundColor: this.state.muiTheme.rawTheme.palette.borderColor
     }, style);
 
-    return _react2['default'].createElement('hr', _extends({}, other, { style: this.prepareStyles(mergedStyles) }));
+    return React.createElement('hr', _extends({}, other, { style: this.prepareStyles(mergedStyles) }));
   }
 });
 
-exports['default'] = ListDivider;
-module.exports = exports['default'];
+module.exports = ListDivider;
 },{"../mixins/style-propable":11,"../styles/raw-themes/light-raw-theme":19,"../styles/theme-manager":21,"react":223}],7:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var _react = require('react');
+var React = require('react');
+var ReactDOM = require('react-dom');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
+var ColorManipulator = require('../utils/color-manipulator');
+var StylePropable = require('../mixins/style-propable');
+var Colors = require('../styles/colors');
+var Transitions = require('../styles/transitions');
+var Typography = require('../styles/typography');
+var EnhancedButton = require('../enhanced-button');
+var IconButton = require('../icon-button');
+var OpenIcon = require('../svg-icons/navigation/arrow-drop-up');
+var CloseIcon = require('../svg-icons/navigation/arrow-drop-down');
+var NestedList = require('./nested-list');
+var DefaultRawTheme = require('../styles/raw-themes/light-raw-theme');
+var ThemeManager = require('../styles/theme-manager');
 
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _reactAddonsPureRenderMixin = require('react-addons-pure-render-mixin');
-
-var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
-
-var _utilsColorManipulator = require('../utils/color-manipulator');
-
-var _utilsColorManipulator2 = _interopRequireDefault(_utilsColorManipulator);
-
-var _mixinsStylePropable = require('../mixins/style-propable');
-
-var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-
-var _stylesColors = require('../styles/colors');
-
-var _stylesColors2 = _interopRequireDefault(_stylesColors);
-
-var _stylesTransitions = require('../styles/transitions');
-
-var _stylesTransitions2 = _interopRequireDefault(_stylesTransitions);
-
-var _stylesTypography = require('../styles/typography');
-
-var _stylesTypography2 = _interopRequireDefault(_stylesTypography);
-
-var _enhancedButton = require('../enhanced-button');
-
-var _enhancedButton2 = _interopRequireDefault(_enhancedButton);
-
-var _iconButton = require('../icon-button');
-
-var _iconButton2 = _interopRequireDefault(_iconButton);
-
-var _svgIconsNavigationArrowDropUp = require('../svg-icons/navigation/arrow-drop-up');
-
-var _svgIconsNavigationArrowDropUp2 = _interopRequireDefault(_svgIconsNavigationArrowDropUp);
-
-var _svgIconsNavigationArrowDropDown = require('../svg-icons/navigation/arrow-drop-down');
-
-var _svgIconsNavigationArrowDropDown2 = _interopRequireDefault(_svgIconsNavigationArrowDropDown);
-
-var _nestedList = require('./nested-list');
-
-var _nestedList2 = _interopRequireDefault(_nestedList);
-
-var _stylesRawThemesLightRawTheme = require('../styles/raw-themes/light-raw-theme');
-
-var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-
-var _stylesThemeManager = require('../styles/theme-manager');
-
-var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
-
-var ListItem = _react2['default'].createClass({
+var ListItem = React.createClass({
   displayName: 'ListItem',
 
-  mixins: [_reactAddonsPureRenderMixin2['default'], _mixinsStylePropable2['default']],
+  mixins: [PureRenderMixin, StylePropable],
 
   contextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   propTypes: {
-    autoGenerateNestedIndicator: _react2['default'].PropTypes.bool,
-    children: _react2['default'].PropTypes.node,
-    disableKeyboardFocus: _react2['default'].PropTypes.bool,
-    disabled: _react2['default'].PropTypes.bool,
-    initiallyOpen: _react2['default'].PropTypes.bool,
-    innerDivStyle: _react2['default'].PropTypes.object,
-    innerStyle: _react2['default'].PropTypes.object,
-    insetChildren: _react2['default'].PropTypes.bool,
-    leftAvatar: _react2['default'].PropTypes.element,
-    leftCheckbox: _react2['default'].PropTypes.element,
-    leftIcon: _react2['default'].PropTypes.element,
-    nestedItems: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.element),
-    nestedLevel: _react2['default'].PropTypes.number,
-    onKeyboardFocus: _react2['default'].PropTypes.func,
-    onMouseEnter: _react2['default'].PropTypes.func,
-    onMouseLeave: _react2['default'].PropTypes.func,
-    onNestedListToggle: _react2['default'].PropTypes.func,
-    onTouchStart: _react2['default'].PropTypes.func,
-    onTouchTap: _react2['default'].PropTypes.func,
-    primaryText: _react2['default'].PropTypes.node,
-    rightAvatar: _react2['default'].PropTypes.element,
-    rightIcon: _react2['default'].PropTypes.element,
-    rightIconButton: _react2['default'].PropTypes.element,
-    rightToggle: _react2['default'].PropTypes.element,
-    secondaryText: _react2['default'].PropTypes.node,
-    secondaryTextLines: _react2['default'].PropTypes.oneOf([1, 2]),
-    style: _react2['default'].PropTypes.object
+    autoGenerateNestedIndicator: React.PropTypes.bool,
+    disabled: React.PropTypes.bool,
+    disableKeyboardFocus: React.PropTypes.bool,
+    initiallyOpen: React.PropTypes.bool,
+    innerDivStyle: React.PropTypes.object,
+    insetChildren: React.PropTypes.bool,
+    innerStyle: React.PropTypes.object,
+    leftAvatar: React.PropTypes.element,
+    leftCheckbox: React.PropTypes.element,
+    leftIcon: React.PropTypes.element,
+    nestedLevel: React.PropTypes.number,
+    nestedItems: React.PropTypes.arrayOf(React.PropTypes.element),
+    onKeyboardFocus: React.PropTypes.func,
+    onMouseEnter: React.PropTypes.func,
+    onMouseLeave: React.PropTypes.func,
+    onNestedListToggle: React.PropTypes.func,
+    onTouchStart: React.PropTypes.func,
+    onTouchTap: React.PropTypes.func,
+    rightAvatar: React.PropTypes.element,
+    rightIcon: React.PropTypes.element,
+    rightIconButton: React.PropTypes.element,
+    rightToggle: React.PropTypes.element,
+    primaryText: React.PropTypes.node,
+    style: React.PropTypes.object,
+    secondaryText: React.PropTypes.node,
+    secondaryTextLines: React.PropTypes.oneOf([1, 2])
   },
 
   //for passing default theme context to children
   childContextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   getChildContext: function getChildContext() {
@@ -1386,7 +1178,7 @@ var ListItem = _react2['default'].createClass({
       rightIconButtonHovered: false,
       rightIconButtonKeyboardFocused: false,
       touch: false,
-      muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])
+      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
     };
   },
 
@@ -1427,7 +1219,7 @@ var ListItem = _react2['default'].createClass({
     var other = _objectWithoutProperties(_props, ['autoGenerateNestedIndicator', 'children', 'disabled', 'disableKeyboardFocus', 'innerDivStyle', 'insetChildren', 'leftAvatar', 'leftCheckbox', 'leftIcon', 'nestedItems', 'nestedLevel', 'onKeyboardFocus', 'onMouseLeave', 'onMouseEnter', 'onTouchStart', 'onTouchTap', 'rightAvatar', 'rightIcon', 'rightIconButton', 'rightToggle', 'primaryText', 'secondaryText', 'secondaryTextLines', 'style']);
 
     var textColor = this.state.muiTheme.rawTheme.palette.textColor;
-    var hoverColor = _utilsColorManipulator2['default'].fade(textColor, 0.1);
+    var hoverColor = ColorManipulator.fade(textColor, 0.1);
     var singleAvatar = !secondaryText && (leftAvatar || rightAvatar);
     var singleNoAvatar = !secondaryText && !(leftAvatar || rightAvatar);
     var twoLine = secondaryText && secondaryTextLines === 1;
@@ -1442,7 +1234,7 @@ var ListItem = _react2['default'].createClass({
         fontSize: 16,
         lineHeight: '16px',
         position: 'relative',
-        transition: _stylesTransitions2['default'].easeOut()
+        transition: Transitions.easeOut()
       },
 
       //This inner div is needed so that ripples will span the entire container
@@ -1465,14 +1257,14 @@ var ListItem = _react2['default'].createClass({
       },
 
       leftIcon: {
-        color: _stylesColors2['default'].grey600,
-        fill: _stylesColors2['default'].grey600,
+        color: Colors.grey600,
+        fill: Colors.grey600,
         left: 4
       },
 
       rightIcon: {
-        color: _stylesColors2['default'].grey400,
-        fill: _stylesColors2['default'].grey400,
+        color: Colors.grey400,
+        fill: Colors.grey400,
         right: 4
       },
 
@@ -1524,7 +1316,7 @@ var ListItem = _react2['default'].createClass({
         height: threeLine ? 36 : 16,
         margin: 0,
         marginTop: 4,
-        color: _stylesTypography2['default'].textLightBlack,
+        color: Typography.textLightBlack,
 
         //needed for 2 and 3 line ellipsis
         overflow: 'hidden',
@@ -1576,14 +1368,14 @@ var ListItem = _react2['default'].createClass({
 
       // Create a nested list indicator icon if we don't have an icon on the right
       if (needsNestedIndicator) {
-        rightIconButtonElement = this.state.open ? _react2['default'].createElement(
-          _iconButton2['default'],
+        rightIconButtonElement = this.state.open ? React.createElement(
+          IconButton,
           null,
-          _react2['default'].createElement(_svgIconsNavigationArrowDropUp2['default'], null)
-        ) : _react2['default'].createElement(
-          _iconButton2['default'],
+          React.createElement(OpenIcon, null)
+        ) : React.createElement(
+          IconButton,
           null,
-          _react2['default'].createElement(_svgIconsNavigationArrowDropDown2['default'], null)
+          React.createElement(CloseIcon, null)
         );
         rightIconButtonHandlers.onTouchTap = this._handleNestedListToggle;
       }
@@ -1605,17 +1397,17 @@ var ListItem = _react2['default'].createClass({
       contentChildren.push(secondaryTextElement);
     }
 
-    var nestedList = nestedItems.length ? _react2['default'].createElement(
-      _nestedList2['default'],
+    var nestedList = nestedItems.length ? React.createElement(
+      NestedList,
       { nestedLevel: nestedLevel + 1, open: this.state.open },
       nestedItems
     ) : undefined;
 
-    return hasCheckbox ? this._createLabelElement(styles, contentChildren) : disabled ? this._createDisabledElement(styles, contentChildren) : _react2['default'].createElement(
+    return hasCheckbox ? this._createLabelElement(styles, contentChildren) : disabled ? this._createDisabledElement(styles, contentChildren) : React.createElement(
       'div',
       null,
-      _react2['default'].createElement(
-        _enhancedButton2['default'],
+      React.createElement(
+        EnhancedButton,
         _extends({}, other, {
           disabled: disabled,
           disableKeyboardFocus: disableKeyboardFocus || this.state.rightIconButtonKeyboardFocused,
@@ -1627,7 +1419,7 @@ var ListItem = _react2['default'].createClass({
           onTouchTap: onTouchTap,
           ref: 'enhancedButton',
           style: this.mergeStyles(styles.root, style) }),
-        _react2['default'].createElement(
+        React.createElement(
           'div',
           { style: this.prepareStyles(styles.innerDiv, innerDivStyle) },
           contentChildren
@@ -1639,7 +1431,7 @@ var ListItem = _react2['default'].createClass({
 
   applyFocusState: function applyFocusState(focusState) {
     var button = this.refs.enhancedButton;
-    var buttonEl = _reactDom2['default'].findDOMNode(button);
+    var buttonEl = ReactDOM.findDOMNode(button);
 
     if (button) {
       switch (focusState) {
@@ -1664,7 +1456,7 @@ var ListItem = _react2['default'].createClass({
 
     var mergedDivStyles = this.prepareStyles(styles.root, styles.innerDiv, innerDivStyle, style);
 
-    return _react2['default'].createElement('div', { style: mergedDivStyles }, contentChildren);
+    return React.createElement('div', { style: mergedDivStyles }, contentChildren);
   },
 
   _createLabelElement: function _createLabelElement(styles, contentChildren) {
@@ -1674,17 +1466,17 @@ var ListItem = _react2['default'].createClass({
 
     var mergedLabelStyles = this.prepareStyles(styles.root, styles.innerDiv, innerDivStyle, styles.label, style);
 
-    return _react2['default'].createElement('label', { style: mergedLabelStyles }, contentChildren);
+    return React.createElement('label', { style: mergedLabelStyles }, contentChildren);
   },
 
   _createTextElement: function _createTextElement(styles, data, key) {
-    var isAnElement = _react2['default'].isValidElement(data);
+    var isAnElement = React.isValidElement(data);
     var mergedStyles = isAnElement ? this.prepareStyles(styles, data.props.style) : null;
 
-    return isAnElement ? _react2['default'].cloneElement(data, {
+    return isAnElement ? React.cloneElement(data, {
       key: key,
       style: mergedStyles
-    }) : _react2['default'].createElement(
+    }) : React.createElement(
       'div',
       { key: key, style: this.prepareStyles(styles) },
       data
@@ -1763,7 +1555,7 @@ var ListItem = _react2['default'].createClass({
   _pushElement: function _pushElement(children, element, baseStyles, additionalProps) {
     if (element) {
       var styles = this.mergeStyles(baseStyles, element.props.style);
-      children.push(_react2['default'].cloneElement(element, _extends({
+      children.push(React.cloneElement(element, _extends({
         key: children.length,
         style: styles
       }, additionalProps)));
@@ -1772,74 +1564,43 @@ var ListItem = _react2['default'].createClass({
 
 });
 
-exports['default'] = ListItem;
-module.exports = exports['default'];
+module.exports = ListItem;
 },{"../enhanced-button":3,"../icon-button":5,"../mixins/style-propable":11,"../styles/colors":18,"../styles/raw-themes/light-raw-theme":19,"../styles/theme-manager":21,"../styles/transitions":22,"../styles/typography":23,"../svg-icons/navigation/arrow-drop-down":25,"../svg-icons/navigation/arrow-drop-up":26,"../utils/color-manipulator":32,"./nested-list":9,"react":223,"react-addons-pure-render-mixin":54,"react-dom":57}],8:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var _react = require('react');
+var React = require('react');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
+var PropTypes = require('../utils/prop-types');
+var StylePropable = require('../mixins/style-propable');
+var Typography = require('../styles/typography');
+var Paper = require('../paper');
+var DefaultRawTheme = require('../styles/raw-themes/light-raw-theme');
+var ThemeManager = require('../styles/theme-manager');
 
-var _react2 = _interopRequireDefault(_react);
-
-var _reactAddonsPureRenderMixin = require('react-addons-pure-render-mixin');
-
-var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
-
-var _utilsPropTypes = require('../utils/prop-types');
-
-var _utilsPropTypes2 = _interopRequireDefault(_utilsPropTypes);
-
-var _mixinsStylePropable = require('../mixins/style-propable');
-
-var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-
-var _stylesTypography = require('../styles/typography');
-
-var _stylesTypography2 = _interopRequireDefault(_stylesTypography);
-
-var _paper = require('../paper');
-
-var _paper2 = _interopRequireDefault(_paper);
-
-var _stylesRawThemesLightRawTheme = require('../styles/raw-themes/light-raw-theme');
-
-var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-
-var _stylesThemeManager = require('../styles/theme-manager');
-
-var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
-
-var List = _react2['default'].createClass({
+var List = React.createClass({
   displayName: 'List',
 
-  mixins: [_reactAddonsPureRenderMixin2['default'], _mixinsStylePropable2['default']],
+  mixins: [PureRenderMixin, StylePropable],
 
   contextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   propTypes: {
-    children: _react2['default'].PropTypes.node,
-    insetSubheader: _react2['default'].PropTypes.bool,
-    style: _react2['default'].PropTypes.object,
-    subheader: _react2['default'].PropTypes.node,
-    subheaderStyle: _react2['default'].PropTypes.object,
-    zDepth: _utilsPropTypes2['default'].zDepth
+    insetSubheader: React.PropTypes.bool,
+    style: React.PropTypes.object,
+    subheader: React.PropTypes.node,
+    subheaderStyle: React.PropTypes.object,
+    zDepth: PropTypes.zDepth
   },
 
   //for passing default theme context to children
   childContextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   getChildContext: function getChildContext() {
@@ -1856,7 +1617,7 @@ var List = _react2['default'].createClass({
 
   getInitialState: function getInitialState() {
     return {
-      muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])
+      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
     };
   },
 
@@ -1886,9 +1647,9 @@ var List = _react2['default'].createClass({
       },
 
       subheader: {
-        color: _stylesTypography2['default'].textLightBlack,
+        color: Typography.textLightBlack,
         fontSize: 14,
-        fontWeight: _stylesTypography2['default'].fontWeightMedium,
+        fontWeight: Typography.fontWeightMedium,
         lineHeight: '48px',
         paddingLeft: insetSubheader ? 72 : 16
       }
@@ -1897,15 +1658,15 @@ var List = _react2['default'].createClass({
     var subheaderElement = undefined;
     if (subheader) {
       var mergedSubheaderStyles = this.prepareStyles(styles.subheader, subheaderStyle);
-      subheaderElement = _react2['default'].createElement(
+      subheaderElement = React.createElement(
         'div',
         { style: mergedSubheaderStyles },
         subheader
       );
     }
 
-    return _react2['default'].createElement(
-      _paper2['default'],
+    return React.createElement(
+      Paper,
       _extends({}, other, {
         style: this.mergeStyles(styles.root, style),
         zDepth: zDepth }),
@@ -1915,37 +1676,21 @@ var List = _react2['default'].createClass({
   }
 });
 
-exports['default'] = List;
-module.exports = exports['default'];
+module.exports = List;
 },{"../mixins/style-propable":11,"../paper":12,"../styles/raw-themes/light-raw-theme":19,"../styles/theme-manager":21,"../styles/typography":23,"../utils/prop-types":38,"react":223,"react-addons-pure-render-mixin":54}],9:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
+var React = require('react');
+var ImmutabilityHelper = require('../utils/immutability-helper');
+var List = require('./list');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _utilsImmutabilityHelper = require('../utils/immutability-helper');
-
-var _utilsImmutabilityHelper2 = _interopRequireDefault(_utilsImmutabilityHelper);
-
-var _list = require('./list');
-
-var _list2 = _interopRequireDefault(_list);
-
-var NestedList = _react2['default'].createClass({
+var NestedList = React.createClass({
   displayName: 'NestedList',
 
   propTypes: {
-    children: _react2['default'].PropTypes.node,
-    nestedLevel: _react2['default'].PropTypes.number,
-    open: _react2['default'].PropTypes.bool,
-    style: _react2['default'].PropTypes.object
+    nestedLevel: React.PropTypes.number,
+    open: React.PropTypes.bool,
+    style: React.PropTypes.object
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -1968,11 +1713,11 @@ var NestedList = _react2['default'].createClass({
       }
     };
 
-    return _react2['default'].createElement(
-      _list2['default'],
-      { style: _utilsImmutabilityHelper2['default'].merge(styles.root, style) },
-      _react2['default'].Children.map(children, function (child) {
-        return _react2['default'].isValidElement(child) ? _react2['default'].cloneElement(child, {
+    return React.createElement(
+      List,
+      { style: ImmutabilityHelper.merge(styles.root, style) },
+      React.Children.map(children, function (child) {
+        return React.isValidElement(child) ? React.cloneElement(child, {
           nestedLevel: nestedLevel + 1
         }) : child;
       })
@@ -1981,20 +1726,11 @@ var NestedList = _react2['default'].createClass({
 
 });
 
-exports['default'] = NestedList;
-module.exports = exports['default'];
+module.exports = NestedList;
 },{"../utils/immutability-helper":36,"./list":8,"react":223}],10:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _utilsShallowEqual = require('../utils/shallow-equal');
-
-var _utilsShallowEqual2 = _interopRequireDefault(_utilsShallowEqual);
+var shallowEqual = require('../utils/shallow-equal');
 
 function relevantContextKeysEqual(classObject, currentContext, nextContext) {
 
@@ -2004,7 +1740,7 @@ function relevantContextKeysEqual(classObject, currentContext, nextContext) {
     var currentContextKeys = classObject.getRelevantContextKeys(currentContext);
     var nextContextKeys = classObject.getRelevantContextKeys(nextContext);
 
-    if (!(0, _utilsShallowEqual2['default'])(currentContextKeys, nextContextKeys)) {
+    if (!shallowEqual(currentContextKeys, nextContextKeys)) {
       return false;
     }
   }
@@ -2023,13 +1759,13 @@ function relevantContextKeysEqual(classObject, currentContext, nextContext) {
   return true;
 }
 
-exports['default'] = {
+module.exports = {
 
   //Don't update if state, prop, and context are equal
   shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState, nextContext) {
 
     //If either the props or state have changed, component should update
-    if (!(0, _utilsShallowEqual2['default'])(this.props, nextProps) || !(0, _utilsShallowEqual2['default'])(this.state, nextState)) {
+    if (!shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState)) {
       return true;
     }
 
@@ -2048,27 +1784,12 @@ exports['default'] = {
   }
 
 };
-module.exports = exports['default'];
 },{"../utils/shallow-equal":39}],11:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _utilsImmutabilityHelper = require('../utils/immutability-helper');
-
-var _utilsImmutabilityHelper2 = _interopRequireDefault(_utilsImmutabilityHelper);
-
-var _utilsStyles = require('../utils/styles');
-
-var _utilsStyles2 = _interopRequireDefault(_utilsStyles);
+var React = require('react');
+var ImmutabilityHelper = require('../utils/immutability-helper');
+var Styles = require('../utils/styles');
 
 // This mixin isn't necessary and will be removed in v0.11
 
@@ -2077,20 +1798,20 @@ var _utilsStyles2 = _interopRequireDefault(_utilsStyles);
  *	styles = Current styles.
  *  props = New style properties that will override the current style.
  */
-exports['default'] = {
+module.exports = {
 
   propTypes: {
-    style: _react2['default'].PropTypes.object
+    style: React.PropTypes.object
   },
 
   //Moved this function to ImmutabilityHelper.merge
   mergeStyles: function mergeStyles() {
-    return _utilsImmutabilityHelper2['default'].merge.apply(this, arguments);
+    return ImmutabilityHelper.merge.apply(this, arguments);
   },
 
   //Moved this function to /utils/styles.js
   mergeAndPrefix: function mergeAndPrefix() {
-    return _utilsStyles2['default'].mergeAndPrefix.apply(this, arguments);
+    return Styles.mergeAndPrefix.apply(this, arguments);
   },
 
   // prepareStyles is used to merge multiple styles, make sure they are flipped to rtl
@@ -2101,63 +1822,36 @@ exports['default'] = {
   //   only call it when passing style attribute to html elements.
   // If you call it twice you'll get a warning anyway.
   prepareStyles: function prepareStyles() {
-    return _utilsStyles2['default'].prepareStyles.apply(_utilsStyles2['default'], [this.state && this.state.muiTheme || this.context.muiTheme].concat([].slice.apply(arguments)));
+    return Styles.prepareStyles.apply(Styles, [this.state && this.state.muiTheme || this.context.muiTheme].concat([].slice.apply(arguments)));
   }
 };
-module.exports = exports['default'];
 },{"../utils/immutability-helper":36,"../utils/styles":40,"react":223}],12:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var _react = require('react');
+var React = require('react');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
+var StylePropable = require('./mixins/style-propable');
+var PropTypes = require('./utils/prop-types');
+var Transitions = require('./styles/transitions');
+var DefaultRawTheme = require('./styles/raw-themes/light-raw-theme');
+var ThemeManager = require('./styles/theme-manager');
 
-var _react2 = _interopRequireDefault(_react);
-
-var _reactAddonsPureRenderMixin = require('react-addons-pure-render-mixin');
-
-var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
-
-var _mixinsStylePropable = require('./mixins/style-propable');
-
-var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-
-var _utilsPropTypes = require('./utils/prop-types');
-
-var _utilsPropTypes2 = _interopRequireDefault(_utilsPropTypes);
-
-var _stylesTransitions = require('./styles/transitions');
-
-var _stylesTransitions2 = _interopRequireDefault(_stylesTransitions);
-
-var _stylesRawThemesLightRawTheme = require('./styles/raw-themes/light-raw-theme');
-
-var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-
-var _stylesThemeManager = require('./styles/theme-manager');
-
-var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
-
-var Paper = _react2['default'].createClass({
+var Paper = React.createClass({
   displayName: 'Paper',
 
-  mixins: [_reactAddonsPureRenderMixin2['default'], _mixinsStylePropable2['default']],
+  mixins: [PureRenderMixin, StylePropable],
 
   contextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   //for passing default theme context to children
   childContextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   getChildContext: function getChildContext() {
@@ -2168,7 +1862,7 @@ var Paper = _react2['default'].createClass({
 
   getInitialState: function getInitialState() {
     return {
-      muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])
+      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
     };
   },
 
@@ -2180,12 +1874,11 @@ var Paper = _react2['default'].createClass({
   },
 
   propTypes: {
-    children: _react2['default'].PropTypes.node,
-    circle: _react2['default'].PropTypes.bool,
-    rounded: _react2['default'].PropTypes.bool,
-    style: _react2['default'].PropTypes.object,
-    transitionEnabled: _react2['default'].PropTypes.bool,
-    zDepth: _utilsPropTypes2['default'].zDepth
+    circle: React.PropTypes.bool,
+    rounded: React.PropTypes.bool,
+    transitionEnabled: React.PropTypes.bool,
+    zDepth: PropTypes.zDepth,
+    style: React.PropTypes.object
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -2210,7 +1903,7 @@ var Paper = _react2['default'].createClass({
 
     var styles = {
       backgroundColor: this.state.muiTheme.paper.backgroundColor,
-      transition: transitionEnabled && _stylesTransitions2['default'].easeOut(),
+      transition: transitionEnabled && Transitions.easeOut(),
       boxSizing: 'border-box',
       fontFamily: this.state.muiTheme.rawTheme.fontFamily,
       WebkitTapHighlightColor: 'rgba(0,0,0,0)',
@@ -2218,7 +1911,7 @@ var Paper = _react2['default'].createClass({
       borderRadius: circle ? '50%' : rounded ? '2px' : '0px'
     };
 
-    return _react2['default'].createElement(
+    return React.createElement(
       'div',
       _extends({}, other, { style: this.prepareStyles(styles, style) }),
       children
@@ -2233,64 +1926,25 @@ var Paper = _react2['default'].createClass({
 
 });
 
-exports['default'] = Paper;
-module.exports = exports['default'];
+module.exports = Paper;
 },{"./mixins/style-propable":11,"./styles/raw-themes/light-raw-theme":19,"./styles/theme-manager":21,"./styles/transitions":22,"./utils/prop-types":38,"react":223,"react-addons-pure-render-mixin":54}],13:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _mixinsStylePropable = require('./mixins/style-propable');
-
-var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-
-var _stylesTransitions = require('./styles/transitions');
-
-var _stylesTransitions2 = _interopRequireDefault(_stylesTransitions);
-
-var _utilsColorManipulator = require('./utils/color-manipulator');
-
-var _utilsColorManipulator2 = _interopRequireDefault(_utilsColorManipulator);
-
-var _utilsChildren = require('./utils/children');
-
-var _utilsChildren2 = _interopRequireDefault(_utilsChildren);
-
-var _stylesTypography = require('./styles/typography');
-
-var _stylesTypography2 = _interopRequireDefault(_stylesTypography);
-
-var _enhancedButton = require('./enhanced-button');
-
-var _enhancedButton2 = _interopRequireDefault(_enhancedButton);
-
-var _paper = require('./paper');
-
-var _paper2 = _interopRequireDefault(_paper);
-
-var _stylesRawThemesLightRawTheme = require('./styles/raw-themes/light-raw-theme');
-
-var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-
-var _stylesThemeManager = require('./styles/theme-manager');
-
-var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
+var React = require('react');
+var ReactDOM = require('react-dom');
+var StylePropable = require('./mixins/style-propable');
+var Transitions = require('./styles/transitions');
+var ColorManipulator = require('./utils/color-manipulator');
+var Children = require('./utils/children');
+var Typography = require('./styles/typography');
+var EnhancedButton = require('./enhanced-button');
+var Paper = require('./paper');
+var DefaultRawTheme = require('./styles/raw-themes/light-raw-theme');
+var ThemeManager = require('./styles/theme-manager');
 
 function validateLabel(props, propName, componentName) {
   if (!props.children && !props.label) {
@@ -2298,18 +1952,18 @@ function validateLabel(props, propName, componentName) {
   }
 }
 
-var RaisedButton = _react2['default'].createClass({
+var RaisedButton = React.createClass({
   displayName: 'RaisedButton',
 
-  mixins: [_mixinsStylePropable2['default']],
+  mixins: [StylePropable],
 
   contextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   //for passing default theme context to children
   childContextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   getChildContext: function getChildContext() {
@@ -2319,26 +1973,25 @@ var RaisedButton = _react2['default'].createClass({
   },
 
   propTypes: {
-    backgroundColor: _react2['default'].PropTypes.string,
-    children: _react2['default'].PropTypes.node,
-    className: _react2['default'].PropTypes.string,
-    disabled: _react2['default'].PropTypes.bool,
-    disabledBackgroundColor: _react2['default'].PropTypes.string,
-    disabledLabelColor: _react2['default'].PropTypes.string,
-    fullWidth: _react2['default'].PropTypes.bool,
+    className: React.PropTypes.string,
+    disabled: React.PropTypes.bool,
     label: validateLabel,
-    labelColor: _react2['default'].PropTypes.string,
-    labelPosition: _react2['default'].PropTypes.oneOf(['before', 'after']),
-    labelStyle: _react2['default'].PropTypes.object,
-    onMouseDown: _react2['default'].PropTypes.func,
-    onMouseEnter: _react2['default'].PropTypes.func,
-    onMouseLeave: _react2['default'].PropTypes.func,
-    onMouseUp: _react2['default'].PropTypes.func,
-    onTouchEnd: _react2['default'].PropTypes.func,
-    onTouchStart: _react2['default'].PropTypes.func,
-    primary: _react2['default'].PropTypes.bool,
-    secondary: _react2['default'].PropTypes.bool,
-    style: _react2['default'].PropTypes.object
+    labelPosition: React.PropTypes.oneOf(['before', 'after']),
+    onMouseDown: React.PropTypes.func,
+    onMouseUp: React.PropTypes.func,
+    onMouseLeave: React.PropTypes.func,
+    onTouchEnd: React.PropTypes.func,
+    onTouchStart: React.PropTypes.func,
+    primary: React.PropTypes.bool,
+    secondary: React.PropTypes.bool,
+    labelStyle: React.PropTypes.object,
+    backgroundColor: React.PropTypes.string,
+    labelColor: React.PropTypes.string,
+    disabledBackgroundColor: React.PropTypes.string,
+    disabledLabelColor: React.PropTypes.string,
+    fullWidth: React.PropTypes.bool,
+    style: React.PropTypes.object,
+    onMouseEnter: React.PropTypes.func
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -2354,7 +2007,7 @@ var RaisedButton = _react2['default'].createClass({
       touched: false,
       initialZDepth: zDepth,
       zDepth: zDepth,
-      muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])
+      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
     };
   },
 
@@ -2396,7 +2049,7 @@ var RaisedButton = _react2['default'].createClass({
         display: 'inline-block',
         minWidth: this.props.fullWidth ? '100%' : this.getThemeButton().minWidth,
         height: this.getThemeButton().height,
-        transition: _stylesTransitions2['default'].easeOut()
+        transition: Transitions.easeOut()
       },
       container: {
         position: 'relative',
@@ -2405,7 +2058,7 @@ var RaisedButton = _react2['default'].createClass({
         padding: 0,
         overflow: 'hidden',
         borderRadius: 2,
-        transition: _stylesTransitions2['default'].easeOut(),
+        transition: Transitions.easeOut(),
         backgroundColor: this._getBackgroundColor(),
 
         //This is need so that ripples do not bleed
@@ -2419,7 +2072,7 @@ var RaisedButton = _react2['default'].createClass({
         fontSize: '14px',
         letterSpacing: 0,
         textTransform: this.getTheme().textTransform ? this.getTheme().textTransform : this.getThemeButton().textTransform ? this.getThemeButton().textTransform : 'uppercase',
-        fontWeight: _stylesTypography2['default'].fontWeightMedium,
+        fontWeight: Typography.fontWeightMedium,
         margin: 0,
         padding: '0px ' + this.state.muiTheme.rawTheme.spacing.desktopGutterLess + 'px',
         userSelect: 'none',
@@ -2427,11 +2080,11 @@ var RaisedButton = _react2['default'].createClass({
         color: this._getLabelColor()
       },
       overlay: {
-        transition: _stylesTransitions2['default'].easeOut(),
+        transition: Transitions.easeOut(),
         top: 0
       },
       overlayWhenHovered: {
-        backgroundColor: _utilsColorManipulator2['default'].fade(this._getLabelColor(), amount)
+        backgroundColor: ColorManipulator.fade(this._getLabelColor(), amount)
       }
     };
     return styles;
@@ -2453,7 +2106,7 @@ var RaisedButton = _react2['default'].createClass({
 
     var labelElement = undefined;
     if (label) {
-      labelElement = _react2['default'].createElement(
+      labelElement = React.createElement(
         'span',
         { style: this.prepareStyles(styles.label, labelStyle) },
         label
@@ -2475,15 +2128,15 @@ var RaisedButton = _react2['default'].createClass({
 
     // Place label before or after children.
     var childrenFragment = labelPosition === 'before' ? { labelElement: labelElement, children: children } : { children: children, labelElement: labelElement };
-    var enhancedButtonChildren = _utilsChildren2['default'].create(childrenFragment);
+    var enhancedButtonChildren = Children.create(childrenFragment);
 
-    return _react2['default'].createElement(
-      _paper2['default'],
+    return React.createElement(
+      Paper,
       {
         style: this.mergeStyles(styles.root, this.props.style),
         zDepth: this.state.zDepth },
-      _react2['default'].createElement(
-        _enhancedButton2['default'],
+      React.createElement(
+        EnhancedButton,
         _extends({}, other, buttonEventHandlers, {
           ref: 'container',
           disabled: disabled,
@@ -2492,7 +2145,7 @@ var RaisedButton = _react2['default'].createClass({
           touchRippleColor: rippleColor,
           focusRippleOpacity: rippleOpacity,
           touchRippleOpacity: rippleOpacity }),
-        _react2['default'].createElement(
+        React.createElement(
           'div',
           { ref: 'overlay', style: this.prepareStyles(styles.overlay, this.state.hovered && !this.props.disabled && styles.overlayWhenHovered) },
           enhancedButtonChildren
@@ -2543,71 +2196,44 @@ var RaisedButton = _react2['default'].createClass({
     if (keyboardFocused && !this.props.disabled) {
       this.setState({ zDepth: this.state.initialZDepth + 1 });
       var amount = this.props.primary || this.props.secondary ? 0.4 : 0.08;
-      _reactDom2['default'].findDOMNode(this.refs.overlay).style.backgroundColor = _utilsColorManipulator2['default'].fade(this.prepareStyles(this.getStyles().label, this.props.labelStyle).color, amount);
+      ReactDOM.findDOMNode(this.refs.overlay).style.backgroundColor = ColorManipulator.fade(this.prepareStyles(this.getStyles().label, this.props.labelStyle).color, amount);
     } else if (!this.state.hovered) {
       this.setState({ zDepth: this.state.initialZDepth });
-      _reactDom2['default'].findDOMNode(this.refs.overlay).style.backgroundColor = 'transparent';
+      ReactDOM.findDOMNode(this.refs.overlay).style.backgroundColor = 'transparent';
     }
   }
 });
 
-exports['default'] = RaisedButton;
-module.exports = exports['default'];
+module.exports = RaisedButton;
 },{"./enhanced-button":3,"./mixins/style-propable":11,"./paper":12,"./styles/raw-themes/light-raw-theme":19,"./styles/theme-manager":21,"./styles/transitions":22,"./styles/typography":23,"./utils/children":31,"./utils/color-manipulator":32,"react":223,"react-dom":57}],14:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var _react = require('react');
+var React = require('react');
+var ReactDOM = require('react-dom');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
+var StylePropable = require('../mixins/style-propable');
+var AutoPrefix = require('../styles/auto-prefix');
+var Transitions = require('../styles/transitions');
+var Colors = require('../styles/colors');
 
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _reactAddonsPureRenderMixin = require('react-addons-pure-render-mixin');
-
-var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
-
-var _mixinsStylePropable = require('../mixins/style-propable');
-
-var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-
-var _stylesAutoPrefix = require('../styles/auto-prefix');
-
-var _stylesAutoPrefix2 = _interopRequireDefault(_stylesAutoPrefix);
-
-var _stylesTransitions = require('../styles/transitions');
-
-var _stylesTransitions2 = _interopRequireDefault(_stylesTransitions);
-
-var _stylesColors = require('../styles/colors');
-
-var _stylesColors2 = _interopRequireDefault(_stylesColors);
-
-var CircleRipple = _react2['default'].createClass({
+var CircleRipple = React.createClass({
   displayName: 'CircleRipple',
 
-  mixins: [_reactAddonsPureRenderMixin2['default'], _mixinsStylePropable2['default']],
+  mixins: [PureRenderMixin, StylePropable],
 
   propTypes: {
-    color: _react2['default'].PropTypes.string,
-    opacity: _react2['default'].PropTypes.number,
-    style: _react2['default'].PropTypes.object
+    color: React.PropTypes.string,
+    opacity: React.PropTypes.number,
+    style: React.PropTypes.object
   },
 
   getDefaultProps: function getDefaultProps() {
     return {
-      color: _stylesColors2['default'].darkBlack,
+      color: Colors.darkBlack,
       opacity: 0.16
     };
   },
@@ -2631,7 +2257,7 @@ var CircleRipple = _react2['default'].createClass({
   componentWillLeave: function componentWillLeave(callback) {
     var _this = this;
 
-    var style = _reactDom2['default'].findDOMNode(this).style;
+    var style = ReactDOM.findDOMNode(this).style;
     style.opacity = 0;
     setTimeout(function () {
       if (_this.isMounted()) callback();
@@ -2656,22 +2282,22 @@ var CircleRipple = _react2['default'].createClass({
       backgroundColor: color
     }, style);
 
-    return _react2['default'].createElement('div', _extends({}, other, { style: mergedStyles }));
+    return React.createElement('div', _extends({}, other, { style: mergedStyles }));
   },
 
   _animate: function _animate() {
-    var style = _reactDom2['default'].findDOMNode(this).style;
-    var transitionValue = _stylesTransitions2['default'].easeOut('2s', 'opacity') + ',' + _stylesTransitions2['default'].easeOut('1s', 'transform');
-    _stylesAutoPrefix2['default'].set(style, 'transition', transitionValue);
-    _stylesAutoPrefix2['default'].set(style, 'transform', 'scale(1)');
+    var style = ReactDOM.findDOMNode(this).style;
+    var transitionValue = Transitions.easeOut('2s', 'opacity') + ',' + Transitions.easeOut('1s', 'transform');
+    AutoPrefix.set(style, 'transition', transitionValue);
+    AutoPrefix.set(style, 'transform', 'scale(1)');
   },
 
   _initializeAnimation: function _initializeAnimation(callback) {
     var _this2 = this;
 
-    var style = _reactDom2['default'].findDOMNode(this).style;
+    var style = ReactDOM.findDOMNode(this).style;
     style.opacity = this.props.opacity;
-    _stylesAutoPrefix2['default'].set(style, 'transform', 'scale(0)');
+    AutoPrefix.set(style, 'transform', 'scale(0)');
     setTimeout(function () {
       if (_this2.isMounted()) callback();
     }, 0);
@@ -2679,67 +2305,37 @@ var CircleRipple = _react2['default'].createClass({
 
 });
 
-exports['default'] = CircleRipple;
-module.exports = exports['default'];
+module.exports = CircleRipple;
 },{"../mixins/style-propable":11,"../styles/auto-prefix":17,"../styles/colors":18,"../styles/transitions":22,"react":223,"react-addons-pure-render-mixin":54,"react-dom":57}],15:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _reactAddonsPureRenderMixin = require('react-addons-pure-render-mixin');
-
-var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
-
-var _mixinsStylePropable = require('../mixins/style-propable');
-
-var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-
-var _stylesAutoPrefix = require('../styles/auto-prefix');
-
-var _stylesAutoPrefix2 = _interopRequireDefault(_stylesAutoPrefix);
-
-var _stylesColors = require('../styles/colors');
-
-var _stylesColors2 = _interopRequireDefault(_stylesColors);
-
-var _stylesTransitions = require('../styles/transitions');
-
-var _stylesTransitions2 = _interopRequireDefault(_stylesTransitions);
-
-var _transitionGroupsScaleIn = require('../transition-groups/scale-in');
-
-var _transitionGroupsScaleIn2 = _interopRequireDefault(_transitionGroupsScaleIn);
+var React = require('react');
+var ReactDOM = require('react-dom');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
+var StylePropable = require('../mixins/style-propable');
+var AutoPrefix = require('../styles/auto-prefix');
+var Colors = require('../styles/colors');
+var Transitions = require('../styles/transitions');
+var ScaleInTransitionGroup = require('../transition-groups/scale-in');
 
 var pulsateDuration = 750;
 
-var FocusRipple = _react2['default'].createClass({
+var FocusRipple = React.createClass({
   displayName: 'FocusRipple',
 
-  mixins: [_reactAddonsPureRenderMixin2['default'], _mixinsStylePropable2['default']],
+  mixins: [PureRenderMixin, StylePropable],
 
   propTypes: {
-    color: _react2['default'].PropTypes.string,
-    innerStyle: _react2['default'].PropTypes.object,
-    opacity: _react2['default'].PropTypes.number,
-    show: _react2['default'].PropTypes.bool,
-    style: _react2['default'].PropTypes.object
+    color: React.PropTypes.string,
+    innerStyle: React.PropTypes.object,
+    opacity: React.PropTypes.number,
+    show: React.PropTypes.bool,
+    style: React.PropTypes.object
   },
 
   getDefaultProps: function getDefaultProps() {
     return {
-      color: _stylesColors2['default'].darkBlack
+      color: Colors.darkBlack
     };
   },
 
@@ -2774,8 +2370,8 @@ var FocusRipple = _react2['default'].createClass({
 
     var ripple = show ? this._getRippleElement(this.props) : null;
 
-    return _react2['default'].createElement(
-      _transitionGroupsScaleIn2['default'],
+    return React.createElement(
+      ScaleInTransitionGroup,
       {
         maxScale: 0.85,
         style: mergedRootStyles },
@@ -2795,16 +2391,16 @@ var FocusRipple = _react2['default'].createClass({
       borderRadius: '50%',
       opacity: opacity ? opacity : 0.16,
       backgroundColor: color,
-      transition: _stylesTransitions2['default'].easeOut(pulsateDuration + 'ms', 'transform', null, _stylesTransitions2['default'].easeInOutFunction)
+      transition: Transitions.easeOut(pulsateDuration + 'ms', 'transform', null, Transitions.easeInOutFunction)
     }, innerStyle);
 
-    return _react2['default'].createElement('div', { ref: 'innerCircle', style: innerStyles });
+    return React.createElement('div', { ref: 'innerCircle', style: innerStyles });
   },
 
   _pulsate: function _pulsate() {
     if (!this.isMounted()) return;
 
-    var innerCircle = _reactDom2['default'].findDOMNode(this.refs.innerCircle);
+    var innerCircle = ReactDOM.findDOMNode(this.refs.innerCircle);
     if (!innerCircle) return;
 
     var startScale = 'scale(1)';
@@ -2815,12 +2411,12 @@ var FocusRipple = _react2['default'].createClass({
     currentScale = currentScale || startScale;
     nextScale = currentScale === startScale ? endScale : startScale;
 
-    _stylesAutoPrefix2['default'].set(innerCircle.style, 'transform', nextScale);
+    AutoPrefix.set(innerCircle.style, 'transform', nextScale);
     this._timeout = setTimeout(this._pulsate, pulsateDuration);
   },
 
   _setRippleSize: function _setRippleSize() {
-    var el = _reactDom2['default'].findDOMNode(this.refs.innerCircle);
+    var el = ReactDOM.findDOMNode(this.refs.innerCircle);
     var height = el.offsetHeight;
     var width = el.offsetWidth;
     var size = Math.max(height, width);
@@ -2836,60 +2432,29 @@ var FocusRipple = _react2['default'].createClass({
 
 });
 
-exports['default'] = FocusRipple;
-module.exports = exports['default'];
+module.exports = FocusRipple;
 },{"../mixins/style-propable":11,"../styles/auto-prefix":17,"../styles/colors":18,"../styles/transitions":22,"../transition-groups/scale-in":30,"react":223,"react-addons-pure-render-mixin":54,"react-dom":57}],16:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
+var React = require('react');
+var ReactDOM = require('react-dom');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
+var ReactTransitionGroup = require('react-addons-transition-group');
+var StylePropable = require('../mixins/style-propable');
+var Dom = require('../utils/dom');
+var ImmutabilityHelper = require('../utils/immutability-helper');
+var CircleRipple = require('./circle-ripple');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _reactAddonsPureRenderMixin = require('react-addons-pure-render-mixin');
-
-var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
-
-var _reactAddonsTransitionGroup = require('react-addons-transition-group');
-
-var _reactAddonsTransitionGroup2 = _interopRequireDefault(_reactAddonsTransitionGroup);
-
-var _mixinsStylePropable = require('../mixins/style-propable');
-
-var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-
-var _utilsDom = require('../utils/dom');
-
-var _utilsDom2 = _interopRequireDefault(_utilsDom);
-
-var _utilsImmutabilityHelper = require('../utils/immutability-helper');
-
-var _utilsImmutabilityHelper2 = _interopRequireDefault(_utilsImmutabilityHelper);
-
-var _circleRipple = require('./circle-ripple');
-
-var _circleRipple2 = _interopRequireDefault(_circleRipple);
-
-var TouchRipple = _react2['default'].createClass({
+var TouchRipple = React.createClass({
   displayName: 'TouchRipple',
 
-  mixins: [_reactAddonsPureRenderMixin2['default'], _mixinsStylePropable2['default']],
+  mixins: [PureRenderMixin, StylePropable],
 
   propTypes: {
-    centerRipple: _react2['default'].PropTypes.bool,
-    children: _react2['default'].PropTypes.node,
-    color: _react2['default'].PropTypes.string,
-    opacity: _react2['default'].PropTypes.number,
-    style: _react2['default'].PropTypes.object
+    centerRipple: React.PropTypes.bool,
+    color: React.PropTypes.string,
+    opacity: React.PropTypes.number,
+    style: React.PropTypes.object
   },
 
   getInitialState: function getInitialState() {
@@ -2928,14 +2493,14 @@ var TouchRipple = _react2['default'].createClass({
         overflow: 'hidden'
       }, style);
 
-      rippleGroup = _react2['default'].createElement(
-        _reactAddonsTransitionGroup2['default'],
+      rippleGroup = React.createElement(
+        ReactTransitionGroup,
         { style: mergedStyles },
         ripples
       );
     }
 
-    return _react2['default'].createElement(
+    return React.createElement(
       'div',
       {
         onMouseUp: this._handleMouseUp,
@@ -2957,7 +2522,7 @@ var TouchRipple = _react2['default'].createClass({
     var ripples = this.state.ripples;
 
     //Add a ripple to the ripples array
-    ripples = _utilsImmutabilityHelper2['default'].push(ripples, _react2['default'].createElement(_circleRipple2['default'], {
+    ripples = ImmutabilityHelper.push(ripples, React.createElement(CircleRipple, {
       key: this.state.nextKey,
       style: !this.props.centerRipple ? this._getRippleStyle(e) : {},
       color: this.props.color,
@@ -2975,7 +2540,7 @@ var TouchRipple = _react2['default'].createClass({
   end: function end() {
     var currentRipples = this.state.ripples;
     this.setState({
-      ripples: _utilsImmutabilityHelper2['default'].shift(currentRipples)
+      ripples: ImmutabilityHelper.shift(currentRipples)
     });
   },
 
@@ -3002,10 +2567,10 @@ var TouchRipple = _react2['default'].createClass({
 
   _getRippleStyle: function _getRippleStyle(e) {
     var style = {};
-    var el = _reactDom2['default'].findDOMNode(this);
+    var el = ReactDOM.findDOMNode(this);
     var elHeight = el.offsetHeight;
     var elWidth = el.offsetWidth;
-    var offset = _utilsDom2['default'].offset(el);
+    var offset = Dom.offset(el);
     var isTouchEvent = e.touches && e.touches.length;
     var pageX = isTouchEvent ? e.touches[0].pageX : e.pageX;
     var pageY = isTouchEvent ? e.touches[0].pageY : e.pageY;
@@ -3034,8 +2599,7 @@ var TouchRipple = _react2['default'].createClass({
 
 });
 
-exports['default'] = TouchRipple;
-module.exports = exports['default'];
+module.exports = TouchRipple;
 },{"../mixins/style-propable":11,"../utils/dom":33,"../utils/immutability-helper":36,"./circle-ripple":14,"react":223,"react-addons-pure-render-mixin":54,"react-addons-transition-group":55,"react-dom":57}],17:[function(require,module,exports){
 'use strict';
 
@@ -3119,15 +2683,12 @@ exports['default'] = {
 module.exports = exports['default'];
 },{"inline-style-prefixer":42}],18:[function(require,module,exports){
 // To include this file in your project:
-// import mui from 'mui';
+// let mui = require('mui');
 // let Colors = mui.Styles.Colors;
 
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports['default'] = {
+module.exports = {
 
   red50: '#ffebee',
   red100: '#ffcdd2',
@@ -3416,27 +2977,12 @@ exports['default'] = {
   lightWhite: 'rgba(255, 255, 255, 0.54)'
 
 };
-module.exports = exports['default'];
 },{}],19:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _colors = require('../colors');
-
-var _colors2 = _interopRequireDefault(_colors);
-
-var _utilsColorManipulator = require('../../utils/color-manipulator');
-
-var _utilsColorManipulator2 = _interopRequireDefault(_utilsColorManipulator);
-
-var _spacing = require('../spacing');
-
-var _spacing2 = _interopRequireDefault(_spacing);
+var Colors = require('../colors');
+var ColorManipulator = require('../../utils/color-manipulator');
+var Spacing = require('../spacing');
 
 /*
  *  Light Theme is the default theme used in material-ui. It is guaranteed to
@@ -3444,37 +2990,27 @@ var _spacing2 = _interopRequireDefault(_spacing);
  *  in a custom theme will default to these values.
  */
 
-exports['default'] = {
-  spacing: _spacing2['default'],
+module.exports = {
+  spacing: Spacing,
   fontFamily: 'Roboto, sans-serif',
-  zIndex: {
-    layer: 20,
-    popover: 20
-  },
   palette: {
-    primary1Color: _colors2['default'].cyan500,
-    primary2Color: _colors2['default'].cyan700,
-    primary3Color: _colors2['default'].grey400,
-    accent1Color: _colors2['default'].pinkA200,
-    accent2Color: _colors2['default'].grey100,
-    accent3Color: _colors2['default'].grey500,
-    textColor: _colors2['default'].darkBlack,
-    alternateTextColor: _colors2['default'].white,
-    canvasColor: _colors2['default'].white,
-    borderColor: _colors2['default'].grey300,
-    disabledColor: _utilsColorManipulator2['default'].fade(_colors2['default'].darkBlack, 0.3),
-    pickerHeaderColor: _colors2['default'].cyan500,
-    clockCircleColor: _utilsColorManipulator2['default'].fade(_colors2['default'].darkBlack, 0.07)
+    primary1Color: Colors.cyan500,
+    primary2Color: Colors.cyan700,
+    primary3Color: Colors.grey400,
+    accent1Color: Colors.pinkA200,
+    accent2Color: Colors.grey100,
+    accent3Color: Colors.grey500,
+    textColor: Colors.darkBlack,
+    alternateTextColor: Colors.white,
+    canvasColor: Colors.white,
+    borderColor: Colors.grey300,
+    disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3)
   }
 };
-module.exports = exports['default'];
 },{"../../utils/color-manipulator":32,"../colors":18,"../spacing":20}],20:[function(require,module,exports){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = {
+module.exports = {
   iconSize: 24,
 
   desktopGutter: 24,
@@ -3488,33 +3024,15 @@ exports["default"] = {
   desktopSubheaderHeight: 48,
   desktopToolbarHeight: 56
 };
-module.exports = exports["default"];
 },{}],21:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
+var Colors = require('./colors');
+var ColorManipulator = require('../utils/color-manipulator');
+var Extend = require('../utils/extend');
+var update = require('react-addons-update');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _colors = require('./colors');
-
-var _colors2 = _interopRequireDefault(_colors);
-
-var _utilsColorManipulator = require('../utils/color-manipulator');
-
-var _utilsColorManipulator2 = _interopRequireDefault(_utilsColorManipulator);
-
-var _utilsExtend = require('../utils/extend');
-
-var _utilsExtend2 = _interopRequireDefault(_utilsExtend);
-
-var _reactAddonsUpdate = require('react-addons-update');
-
-var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
-
-exports['default'] = {
+module.exports = {
 
   //get the MUI theme corresponding to a raw theme
   getMuiTheme: function getMuiTheme(rawTheme) {
@@ -3577,7 +3095,7 @@ exports['default'] = {
         disabledTextColor: rawTheme.palette.disabledColor
       },
       gridTile: {
-        textColor: _colors2['default'].white
+        textColor: Colors.white
       },
       inkBar: {
         backgroundColor: rawTheme.palette.accent1Color
@@ -3664,7 +3182,7 @@ exports['default'] = {
       },
       tableRow: {
         hoverColor: rawTheme.palette.accent2Color,
-        stripeColor: _utilsColorManipulator2['default'].lighten(rawTheme.palette.primary1Color, 0.55),
+        stripeColor: ColorManipulator.lighten(rawTheme.palette.primary1Color, 0.55),
         selectedColor: rawTheme.palette.borderColor,
         textColor: rawTheme.palette.textColor,
         borderColor: rawTheme.palette.borderColor
@@ -3678,8 +3196,6 @@ exports['default'] = {
         textColor: rawTheme.palette.accent3Color,
         accentColor: rawTheme.palette.primary1Color,
         clockColor: rawTheme.palette.textColor,
-        clockCircleColor: rawTheme.palette.clockCircleColor,
-        headerColor: rawTheme.palette.pickerHeaderColor || rawTheme.palette.primary1Color,
         selectColor: rawTheme.palette.primary2Color,
         selectTextColor: rawTheme.palette.alternateTextColor
       },
@@ -3688,14 +3204,14 @@ exports['default'] = {
         thumbOffColor: rawTheme.palette.accent2Color,
         thumbDisabledColor: rawTheme.palette.borderColor,
         thumbRequiredColor: rawTheme.palette.primary1Color,
-        trackOnColor: _utilsColorManipulator2['default'].fade(rawTheme.palette.primary1Color, 0.5),
+        trackOnColor: ColorManipulator.fade(rawTheme.palette.primary1Color, 0.5),
         trackOffColor: rawTheme.palette.primary3Color,
         trackDisabledColor: rawTheme.palette.primary3Color,
         labelColor: rawTheme.palette.textColor,
         labelDisabledColor: rawTheme.palette.disabledColor
       },
       toolbar: {
-        backgroundColor: _utilsColorManipulator2['default'].darken(rawTheme.palette.accent2Color, 0.05),
+        backgroundColor: ColorManipulator.darken(rawTheme.palette.accent2Color, 0.05),
         height: 56,
         titleFontSize: 20,
         iconColor: 'rgba(0, 0, 0, .40)',
@@ -3704,7 +3220,7 @@ exports['default'] = {
       },
       tabs: {
         backgroundColor: rawTheme.palette.primary1Color,
-        textColor: _utilsColorManipulator2['default'].fade(rawTheme.palette.alternateTextColor, 0.6),
+        textColor: ColorManipulator.fade(rawTheme.palette.alternateTextColor, 0.6),
         selectedTextColor: rawTheme.palette.alternateTextColor
       },
       textField: {
@@ -3712,20 +3228,19 @@ exports['default'] = {
         hintColor: rawTheme.palette.disabledColor,
         floatingLabelColor: rawTheme.palette.textColor,
         disabledTextColor: rawTheme.palette.disabledColor,
-        errorColor: _colors2['default'].red500,
+        errorColor: Colors.red500,
         focusColor: rawTheme.palette.primary1Color,
         backgroundColor: 'transparent',
         borderColor: rawTheme.palette.borderColor
       },
-      isRtl: false,
-      zIndex: rawTheme.zIndex
+      isRtl: false
     };
 
     //add properties to objects inside 'returnObj' that depend on existing properties
-    returnObj.flatButton.disabledTextColor = _utilsColorManipulator2['default'].fade(returnObj.flatButton.textColor, 0.3);
-    returnObj.raisedButton.disabledColor = _utilsColorManipulator2['default'].darken(returnObj.raisedButton.color, 0.1);
-    returnObj.raisedButton.disabledTextColor = _utilsColorManipulator2['default'].fade(returnObj.raisedButton.textColor, 0.3);
-    returnObj.toggle.trackRequiredColor = _utilsColorManipulator2['default'].fade(returnObj.toggle.thumbRequiredColor, 0.5);
+    returnObj.flatButton.disabledTextColor = ColorManipulator.fade(returnObj.flatButton.textColor, 0.3);
+    returnObj.raisedButton.disabledColor = ColorManipulator.darken(returnObj.raisedButton.color, 0.1);
+    returnObj.raisedButton.disabledTextColor = ColorManipulator.fade(returnObj.raisedButton.textColor, 0.3);
+    returnObj.toggle.trackRequiredColor = ColorManipulator.fade(returnObj.toggle.thumbRequiredColor, 0.5);
 
     //append the raw theme object to 'returnObj'
     returnObj.rawTheme = rawTheme;
@@ -3743,7 +3258,7 @@ exports['default'] = {
   //function to modify the spacing of the raw theme. This function recomputes
   //the MUI theme and returns it based on the new theme.
   modifyRawThemeSpacing: function modifyRawThemeSpacing(muiTheme, newSpacing) {
-    var newRawTheme = (0, _reactAddonsUpdate2['default'])(muiTheme.rawTheme, { spacing: { $set: newSpacing } });
+    var newRawTheme = update(muiTheme.rawTheme, { spacing: { $set: newSpacing } });
     return this.getMuiTheme(newRawTheme);
   },
 
@@ -3751,27 +3266,25 @@ exports['default'] = {
   //the MUI theme and returns it based on the new raw theme.
   //keys inside 'newPalette' override values for existing keys in palette
   modifyRawThemePalette: function modifyRawThemePalette(muiTheme, newPaletteKeys) {
-    var newPalette = (0, _utilsExtend2['default'])(muiTheme.rawTheme.palette, newPaletteKeys);
-    var newRawTheme = (0, _reactAddonsUpdate2['default'])(muiTheme.rawTheme, { palette: { $set: newPalette } });
+    var newPalette = Extend(muiTheme.rawTheme.palette, newPaletteKeys);
+    var newRawTheme = update(muiTheme.rawTheme, { palette: { $set: newPalette } });
     return this.getMuiTheme(newRawTheme);
   },
 
   //function to modify the font family of the raw theme. This function recomputes
   //the MUI theme and returns it based on the new raw theme.
   modifyRawThemeFontFamily: function modifyRawThemeFontFamily(muiTheme, newFontFamily) {
-    var newRawTheme = (0, _reactAddonsUpdate2['default'])(muiTheme.rawTheme, { fontFamily: { $set: newFontFamily } });
+    var newRawTheme = update(muiTheme.rawTheme, { fontFamily: { $set: newFontFamily } });
     return this.getMuiTheme(newRawTheme);
   }
 
 };
-module.exports = exports['default'];
 },{"../utils/color-manipulator":32,"../utils/extend":35,"./colors":18,"react-addons-update":56}],22:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports['default'] = {
+var AutoPrefix = require('./auto-prefix');
+
+module.exports = {
 
   easeOutFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
   easeInOutFunction: 'cubic-bezier(0.445, 0.05, 0.55, 0.95)',
@@ -3797,38 +3310,29 @@ exports['default'] = {
     duration = duration || '450ms';
     property = property || 'all';
     delay = delay || '0ms';
-    easeFunction = easeFunction || 'linear';
+    easeFunction = easeFunction || "linear";
 
     return property + ' ' + duration + ' ' + easeFunction + ' ' + delay;
   }
 };
-module.exports = exports['default'];
-},{}],23:[function(require,module,exports){
+},{"./auto-prefix":17}],23:[function(require,module,exports){
 'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _colors = require('./colors');
-
-var _colors2 = _interopRequireDefault(_colors);
+var Colors = require('./colors');
 
 var Typography = function Typography() {
   _classCallCheck(this, Typography);
 
   // text colors
-  this.textFullBlack = _colors2['default'].fullBlack;
-  this.textDarkBlack = _colors2['default'].darkBlack;
-  this.textLightBlack = _colors2['default'].lightBlack;
-  this.textMinBlack = _colors2['default'].minBlack;
-  this.textFullWhite = _colors2['default'].fullWhite;
-  this.textDarkWhite = _colors2['default'].darkWhite;
-  this.textLightWhite = _colors2['default'].lightWhite;
+  this.textFullBlack = Colors.fullBlack;
+  this.textDarkBlack = Colors.darkBlack;
+  this.textLightBlack = Colors.lightBlack;
+  this.textMinBlack = Colors.minBlack;
+  this.textFullWhite = Colors.fullWhite;
+  this.textDarkWhite = Colors.darkWhite;
+  this.textLightWhite = Colors.lightWhite;
 
   // font weight
   this.fontWeightLight = 300;
@@ -3838,63 +3342,41 @@ var Typography = function Typography() {
   this.fontStyleButtonFontSize = 14;
 };
 
-exports['default'] = new Typography();
-module.exports = exports['default'];
+module.exports = new Typography();
 },{"./colors":18}],24:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var _react = require('react');
+var React = require('react');
+var StylePropable = require('./mixins/style-propable');
+var Transitions = require('./styles/transitions');
+var DefaultRawTheme = require('./styles/raw-themes/light-raw-theme');
+var ThemeManager = require('./styles/theme-manager');
 
-var _react2 = _interopRequireDefault(_react);
-
-var _mixinsStylePropable = require('./mixins/style-propable');
-
-var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-
-var _stylesTransitions = require('./styles/transitions');
-
-var _stylesTransitions2 = _interopRequireDefault(_stylesTransitions);
-
-var _stylesRawThemesLightRawTheme = require('./styles/raw-themes/light-raw-theme');
-
-var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-
-var _stylesThemeManager = require('./styles/theme-manager');
-
-var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
-
-var SvgIcon = _react2['default'].createClass({
+var SvgIcon = React.createClass({
   displayName: 'SvgIcon',
 
-  mixins: [_mixinsStylePropable2['default']],
+  mixins: [StylePropable],
 
   contextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   propTypes: {
-    children: _react2['default'].PropTypes.node,
-    color: _react2['default'].PropTypes.string,
-    hoverColor: _react2['default'].PropTypes.string,
-    onMouseEnter: _react2['default'].PropTypes.func,
-    onMouseLeave: _react2['default'].PropTypes.func,
-    style: _react2['default'].PropTypes.object,
-    viewBox: _react2['default'].PropTypes.string
+    color: React.PropTypes.string,
+    hoverColor: React.PropTypes.string,
+    onMouseEnter: React.PropTypes.func,
+    onMouseLeave: React.PropTypes.func,
+    viewBox: React.PropTypes.string,
+    style: React.PropTypes.object
   },
 
   //for passing default theme context to children
   childContextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   getChildContext: function getChildContext() {
@@ -3906,7 +3388,7 @@ var SvgIcon = _react2['default'].createClass({
   getInitialState: function getInitialState() {
     return {
       hovered: false,
-      muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])
+      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
     };
   },
 
@@ -3945,7 +3427,7 @@ var SvgIcon = _react2['default'].createClass({
       height: 24,
       width: 24,
       userSelect: 'none',
-      transition: _stylesTransitions2['default'].easeOut()
+      transition: Transitions.easeOut()
     }, style, {
       // Make sure our fill color overrides fill provided in props.style
       fill: this.state.hovered ? onColor : offColor
@@ -3956,7 +3438,7 @@ var SvgIcon = _react2['default'].createClass({
       onMouseLeave: this._handleMouseLeave
     } : {};
 
-    return _react2['default'].createElement(
+    return React.createElement(
       'svg',
       _extends({}, other, events, {
         style: mergedStyles,
@@ -3976,185 +3458,113 @@ var SvgIcon = _react2['default'].createClass({
   }
 });
 
-exports['default'] = SvgIcon;
-module.exports = exports['default'];
+module.exports = SvgIcon;
 },{"./mixins/style-propable":11,"./styles/raw-themes/light-raw-theme":19,"./styles/theme-manager":21,"./styles/transitions":22,"react":223}],25:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
+var React = require('react');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
+var SvgIcon = require('../../svg-icon');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactAddonsPureRenderMixin = require('react-addons-pure-render-mixin');
-
-var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
-
-var _svgIcon = require('../../svg-icon');
-
-var _svgIcon2 = _interopRequireDefault(_svgIcon);
-
-var NavigationArrowDropDown = _react2['default'].createClass({
+var NavigationArrowDropDown = React.createClass({
   displayName: 'NavigationArrowDropDown',
 
-  mixins: [_reactAddonsPureRenderMixin2['default']],
+  mixins: [PureRenderMixin],
 
   render: function render() {
-    return _react2['default'].createElement(
-      _svgIcon2['default'],
+    return React.createElement(
+      SvgIcon,
       this.props,
-      _react2['default'].createElement('path', { d: 'M7 10l5 5 5-5z' })
+      React.createElement('path', { d: 'M7 10l5 5 5-5z' })
     );
   }
 
 });
 
-exports['default'] = NavigationArrowDropDown;
-module.exports = exports['default'];
+module.exports = NavigationArrowDropDown;
 },{"../../svg-icon":24,"react":223,"react-addons-pure-render-mixin":54}],26:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
+var React = require('react');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
+var SvgIcon = require('../../svg-icon');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactAddonsPureRenderMixin = require('react-addons-pure-render-mixin');
-
-var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
-
-var _svgIcon = require('../../svg-icon');
-
-var _svgIcon2 = _interopRequireDefault(_svgIcon);
-
-var NavigationArrowDropUp = _react2['default'].createClass({
+var NavigationArrowDropUp = React.createClass({
   displayName: 'NavigationArrowDropUp',
 
-  mixins: [_reactAddonsPureRenderMixin2['default']],
+  mixins: [PureRenderMixin],
 
   render: function render() {
-    return _react2['default'].createElement(
-      _svgIcon2['default'],
+    return React.createElement(
+      SvgIcon,
       this.props,
-      _react2['default'].createElement('path', { d: 'M7 14l5-5 5 5z' })
+      React.createElement('path', { d: 'M7 14l5-5 5 5z' })
     );
   }
 
 });
 
-exports['default'] = NavigationArrowDropUp;
-module.exports = exports['default'];
+module.exports = NavigationArrowDropUp;
 },{"../../svg-icon":24,"react":223,"react-addons-pure-render-mixin":54}],27:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
+var React = require('react');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
+var SvgIcon = require('../../svg-icon');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactAddonsPureRenderMixin = require('react-addons-pure-render-mixin');
-
-var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
-
-var _svgIcon = require('../../svg-icon');
-
-var _svgIcon2 = _interopRequireDefault(_svgIcon);
-
-var NavigationMenu = _react2['default'].createClass({
+var NavigationMenu = React.createClass({
   displayName: 'NavigationMenu',
 
-  mixins: [_reactAddonsPureRenderMixin2['default']],
+  mixins: [PureRenderMixin],
 
   render: function render() {
-    return _react2['default'].createElement(
-      _svgIcon2['default'],
+    return React.createElement(
+      SvgIcon,
       this.props,
-      _react2['default'].createElement('path', { d: 'M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z' })
+      React.createElement('path', { d: 'M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z' })
     );
   }
 
 });
 
-exports['default'] = NavigationMenu;
-module.exports = exports['default'];
+module.exports = NavigationMenu;
 },{"../../svg-icon":24,"react":223,"react-addons-pure-render-mixin":54}],28:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var _react = require('react');
+var React = require('react');
+var ReactDOM = require('react-dom');
+var StylePropable = require('./mixins/style-propable');
+var Transitions = require('./styles/transitions');
+var Colors = require('./styles/colors');
+var DefaultRawTheme = require('./styles/raw-themes/light-raw-theme');
+var ThemeManager = require('./styles/theme-manager');
 
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _mixinsStylePropable = require('./mixins/style-propable');
-
-var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-
-var _stylesTransitions = require('./styles/transitions');
-
-var _stylesTransitions2 = _interopRequireDefault(_stylesTransitions);
-
-var _stylesColors = require('./styles/colors');
-
-var _stylesColors2 = _interopRequireDefault(_stylesColors);
-
-var _stylesRawThemesLightRawTheme = require('./styles/raw-themes/light-raw-theme');
-
-var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-
-var _stylesThemeManager = require('./styles/theme-manager');
-
-var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
-
-var Tooltip = _react2['default'].createClass({
+var Tooltip = React.createClass({
   displayName: 'Tooltip',
 
-  mixins: [_mixinsStylePropable2['default']],
+  mixins: [StylePropable],
 
   contextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   propTypes: {
-    className: _react2['default'].PropTypes.string,
-    horizontalPosition: _react2['default'].PropTypes.oneOf(['left', 'right', 'center']),
-    label: _react2['default'].PropTypes.node.isRequired,
-    show: _react2['default'].PropTypes.bool,
-    style: _react2['default'].PropTypes.object,
-    touch: _react2['default'].PropTypes.bool,
-    verticalPosition: _react2['default'].PropTypes.oneOf(['top', 'bottom'])
+    className: React.PropTypes.string,
+    label: React.PropTypes.node.isRequired,
+    show: React.PropTypes.bool,
+    touch: React.PropTypes.bool,
+    verticalPosition: React.PropTypes.oneOf(['top', 'bottom']),
+    horizontalPosition: React.PropTypes.oneOf(['left', 'right', 'center']),
+    style: React.PropTypes.object
   },
 
   //for passing default theme context to children
   childContextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   getChildContext: function getChildContext() {
@@ -4184,7 +3594,7 @@ var Tooltip = _react2['default'].createClass({
   getInitialState: function getInitialState() {
     return {
       offsetWidth: null,
-      muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])
+      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
     };
   },
 
@@ -4202,7 +3612,7 @@ var Tooltip = _react2['default'].createClass({
         fontSize: '10px',
         lineHeight: '22px',
         padding: '0 8px',
-        color: _stylesColors2['default'].white,
+        color: Colors.white,
         overflow: 'hidden',
         top: -10000,
         borderRadius: 2,
@@ -4210,7 +3620,7 @@ var Tooltip = _react2['default'].createClass({
         opacity: 0,
         right: horizontalPosition === 'left' ? 12 : null,
         left: horizontalPosition === 'center' ? (this.state.offsetWidth - 48) / 2 * -1 : null,
-        transition: _stylesTransitions2['default'].easeOut('0ms', 'top', '450ms') + ',' + _stylesTransitions2['default'].easeOut('450ms', 'transform', '0ms') + ',' + _stylesTransitions2['default'].easeOut('450ms', 'opacity', '0ms')
+        transition: Transitions.easeOut('0ms', 'top', '450ms') + ',' + Transitions.easeOut('450ms', 'transform', '0ms') + ',' + Transitions.easeOut('450ms', 'opacity', '0ms')
       },
       label: {
         position: 'relative',
@@ -4223,13 +3633,13 @@ var Tooltip = _react2['default'].createClass({
         transform: 'translate(-50%, -50%)',
         borderRadius: '50%',
         backgroundColor: 'transparent',
-        transition: _stylesTransitions2['default'].easeOut('0ms', 'width', '450ms') + ',' + _stylesTransitions2['default'].easeOut('0ms', 'height', '450ms') + ',' + _stylesTransitions2['default'].easeOut('450ms', 'backgroundColor', '0ms')
+        transition: Transitions.easeOut('0ms', 'width', '450ms') + ',' + Transitions.easeOut('0ms', 'height', '450ms') + ',' + Transitions.easeOut('450ms', 'backgroundColor', '0ms')
       },
       rootWhenShown: {
         top: verticalPosition === 'top' ? touchOffsetTop : 36,
         opacity: 0.9,
         transform: 'translate3d(0px, ' + offset + 'px, 0px)',
-        transition: _stylesTransitions2['default'].easeOut('0ms', 'top', '0ms') + ',' + _stylesTransitions2['default'].easeOut('450ms', 'transform', '0ms') + ',' + _stylesTransitions2['default'].easeOut('450ms', 'opacity', '0ms')
+        transition: Transitions.easeOut('0ms', 'top', '0ms') + ',' + Transitions.easeOut('450ms', 'transform', '0ms') + ',' + Transitions.easeOut('450ms', 'opacity', '0ms')
       },
       rootWhenTouched: {
         fontSize: '14px',
@@ -4237,8 +3647,8 @@ var Tooltip = _react2['default'].createClass({
         padding: '0 16px'
       },
       rippleWhenShown: {
-        backgroundColor: _stylesColors2['default'].grey700,
-        transition: _stylesTransitions2['default'].easeOut('450ms', 'width', '0ms') + ',' + _stylesTransitions2['default'].easeOut('450ms', 'height', '0ms') + ',' + _stylesTransitions2['default'].easeOut('450ms', 'backgroundColor', '0ms')
+        backgroundColor: Colors.grey700,
+        transition: Transitions.easeOut('450ms', 'width', '0ms') + ',' + Transitions.easeOut('450ms', 'height', '0ms') + ',' + Transitions.easeOut('450ms', 'backgroundColor', '0ms')
       }
     };
 
@@ -4252,14 +3662,14 @@ var Tooltip = _react2['default'].createClass({
     var other = _objectWithoutProperties(_props, ['label']);
 
     var styles = this.getStyles();
-    return _react2['default'].createElement(
+    return React.createElement(
       'div',
       _extends({}, other, {
         style: this.prepareStyles(styles.root, this.props.show && styles.rootWhenShown, this.props.touch && styles.rootWhenTouched, this.props.style) }),
-      _react2['default'].createElement('div', {
+      React.createElement('div', {
         ref: 'ripple',
         style: this.prepareStyles(styles.ripple, this.props.show && styles.rippleWhenShown) }),
-      _react2['default'].createElement(
+      React.createElement(
         'span',
         { style: this.prepareStyles(styles.label) },
         this.props.label
@@ -4268,10 +3678,10 @@ var Tooltip = _react2['default'].createClass({
   },
 
   _setRippleSize: function _setRippleSize() {
-    var ripple = _reactDom2['default'].findDOMNode(this.refs.ripple);
-    var tooltip = window.getComputedStyle(_reactDom2['default'].findDOMNode(this));
-    var tooltipWidth = parseInt(tooltip.getPropertyValue('width'), 10) / (this.props.horizontalPosition === 'center' ? 2 : 1);
-    var tooltipHeight = parseInt(tooltip.getPropertyValue('height'), 10);
+    var ripple = ReactDOM.findDOMNode(this.refs.ripple);
+    var tooltip = window.getComputedStyle(ReactDOM.findDOMNode(this));
+    var tooltipWidth = parseInt(tooltip.getPropertyValue("width"), 10) / (this.props.horizontalPosition === 'center' ? 2 : 1);
+    var tooltipHeight = parseInt(tooltip.getPropertyValue("height"), 10);
 
     var rippleDiameter = Math.ceil(Math.sqrt(Math.pow(tooltipHeight, 2) + Math.pow(tooltipWidth, 2)) * 2);
     if (this.props.show) {
@@ -4284,71 +3694,41 @@ var Tooltip = _react2['default'].createClass({
   },
 
   _setTooltipPosition: function _setTooltipPosition() {
-    var tooltip = _reactDom2['default'].findDOMNode(this);
+    var tooltip = ReactDOM.findDOMNode(this);
     this.setState({ offsetWidth: tooltip.offsetWidth });
   }
 
 });
 
-exports['default'] = Tooltip;
-module.exports = exports['default'];
+module.exports = Tooltip;
 },{"./mixins/style-propable":11,"./styles/colors":18,"./styles/raw-themes/light-raw-theme":19,"./styles/theme-manager":21,"./styles/transitions":22,"react":223,"react-dom":57}],29:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var _react = require('react');
+var React = require('react');
+var ReactDOM = require('react-dom');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
+var StylePropable = require('../mixins/style-propable');
+var AutoPrefix = require('../styles/auto-prefix');
+var Transitions = require('../styles/transitions');
+var DefaultRawTheme = require('../styles/raw-themes/light-raw-theme');
+var ThemeManager = require('../styles/theme-manager');
 
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _reactAddonsPureRenderMixin = require('react-addons-pure-render-mixin');
-
-var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
-
-var _mixinsStylePropable = require('../mixins/style-propable');
-
-var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-
-var _stylesAutoPrefix = require('../styles/auto-prefix');
-
-var _stylesAutoPrefix2 = _interopRequireDefault(_stylesAutoPrefix);
-
-var _stylesTransitions = require('../styles/transitions');
-
-var _stylesTransitions2 = _interopRequireDefault(_stylesTransitions);
-
-var _stylesRawThemesLightRawTheme = require('../styles/raw-themes/light-raw-theme');
-
-var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-
-var _stylesThemeManager = require('../styles/theme-manager');
-
-var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
-
-var ScaleInChild = _react2['default'].createClass({
+var ScaleInChild = React.createClass({
   displayName: 'ScaleInChild',
 
-  mixins: [_reactAddonsPureRenderMixin2['default'], _mixinsStylePropable2['default']],
+  mixins: [PureRenderMixin, StylePropable],
 
   contextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   //for passing default theme context to children
   childContextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   getChildContext: function getChildContext() {
@@ -4359,7 +3739,7 @@ var ScaleInChild = _react2['default'].createClass({
 
   getInitialState: function getInitialState() {
     return {
-      muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])
+      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
     };
   },
 
@@ -4371,11 +3751,10 @@ var ScaleInChild = _react2['default'].createClass({
   },
 
   propTypes: {
-    children: _react2['default'].PropTypes.node,
-    enterDelay: _react2['default'].PropTypes.number,
-    maxScale: _react2['default'].PropTypes.number,
-    minScale: _react2['default'].PropTypes.number,
-    style: _react2['default'].PropTypes.object
+    enterDelay: React.PropTypes.number,
+    maxScale: React.PropTypes.number,
+    minScale: React.PropTypes.number,
+    style: React.PropTypes.object
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -4405,10 +3784,10 @@ var ScaleInChild = _react2['default'].createClass({
   componentWillLeave: function componentWillLeave(callback) {
     var _this = this;
 
-    var style = _reactDom2['default'].findDOMNode(this).style;
+    var style = ReactDOM.findDOMNode(this).style;
 
     style.opacity = '0';
-    _stylesAutoPrefix2['default'].set(style, 'transform', 'scale(' + this.props.minScale + ')');
+    AutoPrefix.set(style, 'transform', 'scale(' + this.props.minScale + ')');
 
     setTimeout(function () {
       if (_this.isMounted()) callback();
@@ -4429,10 +3808,10 @@ var ScaleInChild = _react2['default'].createClass({
       width: '100%',
       top: 0,
       left: 0,
-      transition: _stylesTransitions2['default'].easeOut(null, ['transform', 'opacity'])
+      transition: Transitions.easeOut(null, ['transform', 'opacity'])
     }, style);
 
-    return _react2['default'].createElement(
+    return React.createElement(
       'div',
       _extends({}, other, { style: mergedRootStyles }),
       children
@@ -4440,19 +3819,19 @@ var ScaleInChild = _react2['default'].createClass({
   },
 
   _animate: function _animate() {
-    var style = _reactDom2['default'].findDOMNode(this).style;
+    var style = ReactDOM.findDOMNode(this).style;
 
     style.opacity = '1';
-    _stylesAutoPrefix2['default'].set(style, 'transform', 'scale(' + this.props.maxScale + ')');
+    AutoPrefix.set(style, 'transform', 'scale(' + this.props.maxScale + ')');
   },
 
   _initializeAnimation: function _initializeAnimation(callback) {
     var _this2 = this;
 
-    var style = _reactDom2['default'].findDOMNode(this).style;
+    var style = ReactDOM.findDOMNode(this).style;
 
     style.opacity = '0';
-    _stylesAutoPrefix2['default'].set(style, 'transform', 'scale(0)');
+    AutoPrefix.set(style, 'transform', 'scale(0)');
 
     setTimeout(function () {
       if (_this2.isMounted()) callback();
@@ -4461,61 +3840,34 @@ var ScaleInChild = _react2['default'].createClass({
 
 });
 
-exports['default'] = ScaleInChild;
-module.exports = exports['default'];
+module.exports = ScaleInChild;
 },{"../mixins/style-propable":11,"../styles/auto-prefix":17,"../styles/raw-themes/light-raw-theme":19,"../styles/theme-manager":21,"../styles/transitions":22,"react":223,"react-addons-pure-render-mixin":54,"react-dom":57}],30:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var _react = require('react');
+var React = require('react');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
+var ReactTransitionGroup = require('react-addons-transition-group');
+var StylePropable = require('../mixins/style-propable');
+var ScaleInChild = require('./scale-in-child');
+var DefaultRawTheme = require('../styles/raw-themes/light-raw-theme');
+var ThemeManager = require('../styles/theme-manager');
 
-var _react2 = _interopRequireDefault(_react);
-
-var _reactAddonsPureRenderMixin = require('react-addons-pure-render-mixin');
-
-var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
-
-var _reactAddonsTransitionGroup = require('react-addons-transition-group');
-
-var _reactAddonsTransitionGroup2 = _interopRequireDefault(_reactAddonsTransitionGroup);
-
-var _mixinsStylePropable = require('../mixins/style-propable');
-
-var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-
-var _scaleInChild = require('./scale-in-child');
-
-var _scaleInChild2 = _interopRequireDefault(_scaleInChild);
-
-var _stylesRawThemesLightRawTheme = require('../styles/raw-themes/light-raw-theme');
-
-var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-
-var _stylesThemeManager = require('../styles/theme-manager');
-
-var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
-
-var ScaleIn = _react2['default'].createClass({
+var ScaleIn = React.createClass({
   displayName: 'ScaleIn',
 
-  mixins: [_reactAddonsPureRenderMixin2['default'], _mixinsStylePropable2['default']],
+  mixins: [PureRenderMixin, StylePropable],
 
   contextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   //for passing default theme context to children
   childContextTypes: {
-    muiTheme: _react2['default'].PropTypes.object
+    muiTheme: React.PropTypes.object
   },
 
   getChildContext: function getChildContext() {
@@ -4526,7 +3878,7 @@ var ScaleIn = _react2['default'].createClass({
 
   getInitialState: function getInitialState() {
     return {
-      muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])
+      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
     };
   },
 
@@ -4538,12 +3890,11 @@ var ScaleIn = _react2['default'].createClass({
   },
 
   propTypes: {
-    childStyle: _react2['default'].PropTypes.object,
-    children: _react2['default'].PropTypes.node,
-    enterDelay: _react2['default'].PropTypes.number,
-    maxScale: _react2['default'].PropTypes.number,
-    minScale: _react2['default'].PropTypes.number,
-    style: _react2['default'].PropTypes.object
+    childStyle: React.PropTypes.object,
+    enterDelay: React.PropTypes.number,
+    maxScale: React.PropTypes.number,
+    minScale: React.PropTypes.number,
+    style: React.PropTypes.object
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -4569,9 +3920,9 @@ var ScaleIn = _react2['default'].createClass({
       height: '100%'
     }, style);
 
-    var newChildren = _react2['default'].Children.map(children, function (child) {
-      return _react2['default'].createElement(
-        _scaleInChild2['default'],
+    var newChildren = React.Children.map(children, function (child) {
+      return React.createElement(
+        ScaleInChild,
         {
           key: child.key,
           enterDelay: enterDelay,
@@ -4582,8 +3933,8 @@ var ScaleIn = _react2['default'].createClass({
       );
     });
 
-    return _react2['default'].createElement(
-      _reactAddonsTransitionGroup2['default'],
+    return React.createElement(
+      ReactTransitionGroup,
       _extends({}, other, {
         style: mergedRootStyles,
         component: 'div' }),
@@ -4593,26 +3944,14 @@ var ScaleIn = _react2['default'].createClass({
 
 });
 
-exports['default'] = ScaleIn;
-module.exports = exports['default'];
+module.exports = ScaleIn;
 },{"../mixins/style-propable":11,"../styles/raw-themes/light-raw-theme":19,"../styles/theme-manager":21,"./scale-in-child":29,"react":223,"react-addons-pure-render-mixin":54,"react-addons-transition-group":55}],31:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
+var React = require('react');
+var createFragment = require('react-addons-create-fragment');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactAddonsCreateFragment = require('react-addons-create-fragment');
-
-var _reactAddonsCreateFragment2 = _interopRequireDefault(_reactAddonsCreateFragment);
-
-exports['default'] = {
+module.exports = {
 
   create: function create(fragments) {
     var newFragments = {};
@@ -4632,30 +3971,26 @@ exports['default'] = {
 
     if (validChildrenCount === 0) return undefined;
     if (validChildrenCount === 1) return newFragments[firstKey];
-    return (0, _reactAddonsCreateFragment2['default'])(newFragments);
+    return createFragment(newFragments);
   },
 
   extend: function extend(children, extendedProps, extendedChildren) {
 
-    return _react2['default'].isValidElement(children) ? _react2['default'].Children.map(children, function (child) {
+    return React.isValidElement(children) ? React.Children.map(children, function (child) {
 
       var newProps = typeof extendedProps === 'function' ? extendedProps(child) : extendedProps;
 
       var newChildren = typeof extendedChildren === 'function' ? extendedChildren(child) : extendedChildren ? extendedChildren : child.props.children;
 
-      return _react2['default'].cloneElement(child, newProps, newChildren);
+      return React.cloneElement(child, newProps, newChildren);
     }) : children;
   }
 
 };
-module.exports = exports['default'];
 },{"react":223,"react-addons-create-fragment":53}],32:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports['default'] = {
+module.exports = {
 
   /**
    * The relative brightness of any point in a colorspace, normalized to 0 for
@@ -4827,14 +4162,10 @@ exports['default'] = {
     }
   }
 };
-module.exports = exports['default'];
 },{}],33:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports['default'] = {
+module.exports = {
 
   isDescendant: function isDescendant(parent, child) {
     var node = child.parentNode;
@@ -4904,14 +4235,10 @@ exports['default'] = {
   }
 
 };
-module.exports = exports['default'];
 },{}],34:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports['default'] = {
+module.exports = {
 
   once: function once(el, type, callback) {
     var typeArray = type ? type.split(' ') : [];
@@ -4949,13 +4276,9 @@ exports['default'] = {
     return ['keydown', 'keypress', 'keyup'].indexOf(e.type) !== -1;
   }
 };
-module.exports = exports['default'];
 },{}],35:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
 function isObject(obj) {
   return typeof obj === 'object' && obj !== null;
 }
@@ -5002,28 +4325,20 @@ var extend = function extend(base, override) {
   return mergedObject;
 };
 
-exports['default'] = extend;
-module.exports = exports['default'];
+module.exports = extend;
 },{}],36:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _reactAddonsUpdate = require('react-addons-update');
-
-var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
+var React = require('react');
+var update = require('react-addons-update');
 
 function mergeSingle(objA, objB) {
   if (!objA) return objB;
   if (!objB) return objA;
-  return (0, _reactAddonsUpdate2['default'])(objA, { $merge: objB });
+  return update(objA, { $merge: objB });
 }
 
-exports['default'] = {
+module.exports = {
 
   merge: function merge() {
     var args = Array.prototype.slice.call(arguments, 0);
@@ -5040,27 +4355,23 @@ exports['default'] = {
   mergeItem: function mergeItem(obj, key, newValueObject) {
     var command = {};
     command[key] = { $merge: newValueObject };
-    return (0, _reactAddonsUpdate2['default'])(obj, command);
+    return update(obj, command);
   },
 
   push: function push(array, obj) {
     var newObj = Array.isArray(obj) ? obj : [obj];
-    return (0, _reactAddonsUpdate2['default'])(array, { $push: newObj });
+    return update(array, { $push: newObj });
   },
 
   shift: function shift(array) {
-    return (0, _reactAddonsUpdate2['default'])(array, { $splice: [[0, 1]] });
+    return update(array, { $splice: [[0, 1]] });
   }
 
 };
-module.exports = exports['default'];
-},{"react-addons-update":56}],37:[function(require,module,exports){
+},{"react":223,"react-addons-update":56}],37:[function(require,module,exports){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = {
+module.exports = {
   DOWN: 40,
   ESC: 27,
   ENTER: 13,
@@ -5070,44 +4381,34 @@ exports["default"] = {
   TAB: 9,
   UP: 38
 };
-module.exports = exports["default"];
 },{}],38:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
+var React = require('react');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+var horizontal = React.PropTypes.oneOf(['left', 'middle', 'right']);
+var vertical = React.PropTypes.oneOf(['top', 'center', 'bottom']);
 
-var _react = require('react');
+module.exports = {
 
-var _react2 = _interopRequireDefault(_react);
-
-var horizontal = _react2['default'].PropTypes.oneOf(['left', 'middle', 'right']);
-var vertical = _react2['default'].PropTypes.oneOf(['top', 'center', 'bottom']);
-
-exports['default'] = {
-
-  corners: _react2['default'].PropTypes.oneOf(['bottom-left', 'bottom-right', 'top-left', 'top-right']),
+  corners: React.PropTypes.oneOf(['bottom-left', 'bottom-right', 'top-left', 'top-right']),
 
   horizontal: horizontal,
 
   vertical: vertical,
 
-  origin: _react2['default'].PropTypes.shape({
+  origin: React.PropTypes.shape({
     horizontal: horizontal,
     vertical: vertical
   }),
 
-  cornersAndCenter: _react2['default'].PropTypes.oneOf(['bottom-center', 'bottom-left', 'bottom-right', 'top-center', 'top-left', 'top-right']),
+  cornersAndCenter: React.PropTypes.oneOf(['bottom-center', 'bottom-left', 'bottom-right', 'top-center', 'top-left', 'top-right']),
 
-  stringOrNumber: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.string, _react2['default'].PropTypes.number]),
+  stringOrNumber: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
 
-  zDepth: _react2['default'].PropTypes.oneOf([0, 1, 2, 3, 4, 5])
+  zDepth: React.PropTypes.oneOf([0, 1, 2, 3, 4, 5])
 
 };
-module.exports = exports['default'];
 },{"react":223}],39:[function(require,module,exports){
 'use strict';
 
@@ -5148,29 +4449,18 @@ module.exports = exports['default'];
 (function (process){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _stylesAutoPrefix = require('../styles/auto-prefix');
-
-var _stylesAutoPrefix2 = _interopRequireDefault(_stylesAutoPrefix);
-
-var _utilsImmutabilityHelper = require('../utils/immutability-helper');
-
-var _utilsImmutabilityHelper2 = _interopRequireDefault(_utilsImmutabilityHelper);
+var AutoPrefix = require('../styles/auto-prefix');
+var ImmutabilityHelper = require('../utils/immutability-helper');
 
 var reTranslate = /((^|\s)translate(3d|X)?\()(\-?[\d]+)/;
 
 var reSkew = /((^|\s)skew(x|y)?\()\s*(\-?[\d]+)(deg|rad|grad)(,\s*(\-?[\d]+)(deg|rad|grad))?/;
 
-exports['default'] = {
+module.exports = {
 
   mergeAndPrefix: function mergeAndPrefix() {
-    var mergedStyles = _utilsImmutabilityHelper2['default'].merge.apply(this, arguments);
-    return _stylesAutoPrefix2['default'].all(mergedStyles);
+    var mergedStyles = ImmutabilityHelper.merge.apply(this, arguments);
+    return AutoPrefix.all(mergedStyles);
   },
 
   // This function ensures that `style` supports both ltr and rtl directions by checking
@@ -5180,7 +4470,7 @@ exports['default'] = {
       if (style.didFlip) {
         console.warn(new Error('You\'re calling `ensureDirection` on the same style object twice.'));
       }
-      style = _utilsImmutabilityHelper2['default'].merge({
+      style = ImmutabilityHelper.merge({
         didFlip: 'true'
       }, style);
     }
@@ -5255,12 +4545,11 @@ exports['default'] = {
       styles[_key - 1] = arguments[_key];
     }
 
-    styles = styles.length > 1 ? _utilsImmutabilityHelper2['default'].merge.apply(this, styles) : styles[0] || {};
+    styles = styles.length > 1 ? ImmutabilityHelper.merge.apply(this, styles) : styles[0] || {};
     var flipped = this.ensureDirection(muiTheme, styles);
-    return _stylesAutoPrefix2['default'].all(flipped);
+    return AutoPrefix.all(flipped);
   }
 };
-module.exports = exports['default'];
 }).call(this,require('_process'))
 },{"../styles/auto-prefix":17,"../utils/immutability-helper":36,"_process":1}],41:[function(require,module,exports){
 'use strict';
@@ -25921,18 +25210,131 @@ const List = require('material-ui/lib/lists/list');
 const ListDivider = require('material-ui/lib/lists/list-divider');
 const ListItem = require('material-ui/lib/lists/list-item');
 
+const Header = React.createClass({
+  displayName: 'Header',
+
+  render: function () {
+    return React.createElement(
+      'div',
+      { id: 'header' },
+      React.createElement(AppBar, { title: 'Application de Chat !', iconClassNameRight: 'muidocs-icon-navigation-expand-more' })
+    );
+  }
+});
+
+const Footer = React.createClass({
+  displayName: 'Footer',
+
+  render: function () {
+    return React.createElement(
+      'div',
+      { id: 'footer' },
+      React.createElement(AppBar, { title: 'Title', iconClassNameRight: 'muidocs-icon-navigation-expand-more' })
+    );
+  }
+});
+
+const LeftSide = React.createClass({
+  displayName: 'LeftSide',
+
+  render: function () {
+    return React.createElement(
+      'div',
+      { id: 'leftSide' },
+      React.createElement(
+        List,
+        null,
+        React.createElement(ListItem, { primaryText: 'Inbox' }),
+        React.createElement(ListItem, { primaryText: 'Starred' }),
+        React.createElement(ListItem, { primaryText: 'Sent mail' }),
+        React.createElement(ListItem, { primaryText: 'Drafts' }),
+        React.createElement(ListItem, { primaryText: 'Inbox' })
+      ),
+      React.createElement(ListDivider, null),
+      React.createElement(
+        List,
+        null,
+        React.createElement(ListItem, { primaryText: 'All mail' }),
+        React.createElement(ListItem, { primaryText: 'Trash' }),
+        React.createElement(ListItem, { primaryText: 'Spam' }),
+        React.createElement(ListItem, { primaryText: 'Follow up' })
+      )
+    );
+  }
+});
+
+const RightSide = React.createClass({
+  displayName: 'RightSide',
+
+  render: function () {
+    return React.createElement(
+      'div',
+      { id: 'rightSide' },
+      React.createElement(
+        List,
+        null,
+        React.createElement(ListItem, { primaryText: 'Inbox' }),
+        React.createElement(ListItem, { primaryText: 'Starred' }),
+        React.createElement(ListItem, { primaryText: 'Sent mail' }),
+        React.createElement(ListItem, { primaryText: 'Drafts' }),
+        React.createElement(ListItem, { primaryText: 'Inbox' })
+      ),
+      React.createElement(ListDivider, null),
+      React.createElement(
+        List,
+        null,
+        React.createElement(ListItem, { primaryText: 'All mail' }),
+        React.createElement(ListItem, { primaryText: 'Trash' }),
+        React.createElement(ListItem, { primaryText: 'Spam' }),
+        React.createElement(ListItem, { primaryText: 'Follow up' })
+      )
+    );
+  }
+});
+
+const MainContent = React.createClass({
+  displayName: 'MainContent',
+
+  render: function () {
+    return React.createElement(
+      'div',
+      { id: 'mainContent' },
+      React.createElement(
+        'p',
+        null,
+        'Am i the content ?'
+      )
+    );
+  }
+});
+
+const Content = React.createClass({
+  displayName: 'Content',
+
+  render: function () {
+    return React.createElement(
+      'div',
+      { id: 'main' },
+      React.createElement(LeftSide, null),
+      React.createElement(MainContent, null),
+      React.createElement(RightSide, null)
+    );
+  }
+});
+
 const MyPage = React.createClass({
   displayName: 'MyPage',
 
   render: function () {
     return React.createElement(
       'div',
-      { id: 'header' },
-      React.createElement(AppBar, { title: 'Title', iconClassNameRight: 'muidocs-icon-navigation-expand-more' })
+      { id: 'page' },
+      React.createElement(Header, null),
+      React.createElement(Content, null)
     );
   }
 });
 
-ReactDOM.render(React.createElement(MyPage, null), document.getElementById('example'));
+ReactDOM.render(React.createElement(MyPage, null), document.getElementById('content'));
 
 },{"material-ui/lib/app-bar":2,"material-ui/lib/lists/list":8,"material-ui/lib/lists/list-divider":6,"material-ui/lib/lists/list-item":7,"material-ui/lib/raised-button":13,"react":223,"react-dom":57,"react-tap-event-plugin":61}]},{},[224]);

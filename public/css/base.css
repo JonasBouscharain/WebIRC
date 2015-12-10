@@ -1,0 +1,35 @@
+#header{
+	position: absolute;
+
+	top:0px;
+	left: 0px;
+	right: 0px;
+	height: 64px;
+}
+
+#leftSide{
+	position: absolute;
+
+	top: 64px;
+	bottom: 0px;
+	left: 0px;
+	width: 200px;
+}
+
+#mainContent{
+	position: absolute;
+
+	top: 64px;
+	right: 200px;
+	left: 200px;
+	bottom: 0px;
+}
+
+#rightSide{
+	position: absolute;
+
+	top: 64px;
+	right: 0px;
+	bottom: 0px;
+	width: 200px;
+}

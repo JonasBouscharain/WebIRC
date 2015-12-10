@@ -8,6 +8,7 @@ const AppBar = require('material-ui/lib/app-bar');
 const List = require('material-ui/lib/lists/list');
 const ListDivider = require('material-ui/lib/lists/list-divider');
 const ListItem = require('material-ui/lib/lists/list-item');
+const Paper = require('material-ui/lib/paper');
 
 const Header = React.createClass({
   render : function() {
@@ -33,7 +34,7 @@ const LeftSide = React.createClass({
   render : function() {
     return (
     	<div id='leftSide'>
-    		<List>
+    		<List subheader="Active Channels">
 			  <ListItem primaryText="Inbox" />
 			  <ListItem primaryText="Starred" />
 			  <ListItem primaryText="Sent mail" />
@@ -41,7 +42,7 @@ const LeftSide = React.createClass({
 			  <ListItem primaryText="Inbox" />
 			</List>
 			<ListDivider />
-			<List>
+			<List subheader="Other Channels">
 			  <ListItem primaryText="All mail" />
 			  <ListItem primaryText="Trash" />
 			  <ListItem primaryText="Spam" />
@@ -56,7 +57,7 @@ const RightSide = React.createClass({
   render : function() {
     return (
     	<div id='rightSide'>
-    		<List>
+    		<List subheader="Connected administrators">
 			  <ListItem primaryText="Inbox" />
 			  <ListItem primaryText="Starred" />
 			  <ListItem primaryText="Sent mail" />
@@ -64,7 +65,7 @@ const RightSide = React.createClass({
 			  <ListItem primaryText="Inbox" />
 			</List>
 			<ListDivider />
-			<List>
+			<List subheader="Connected users">
 			  <ListItem primaryText="All mail" />
 			  <ListItem primaryText="Trash" />
 			  <ListItem primaryText="Spam" />
@@ -79,7 +80,11 @@ const MainContent = React.createClass({
   render : function() {
     return (
     	<div id='mainContent'>
-    		<p>Am i the content ?</p>
+    		<div id="paperMaterial">
+    			<Paper zDepth={1}>
+    				<p> Am i the content ? </p>
+    			</Paper>
+    		</div>
 		</div>
     );
   },

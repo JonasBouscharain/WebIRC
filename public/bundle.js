@@ -25209,6 +25209,7 @@ const AppBar = require('material-ui/lib/app-bar');
 const List = require('material-ui/lib/lists/list');
 const ListDivider = require('material-ui/lib/lists/list-divider');
 const ListItem = require('material-ui/lib/lists/list-item');
+const Paper = require('material-ui/lib/paper');
 
 const Header = React.createClass({
   displayName: 'Header',
@@ -25243,7 +25244,7 @@ const LeftSide = React.createClass({
       { id: 'leftSide' },
       React.createElement(
         List,
-        null,
+        { subheader: 'Active Channels' },
         React.createElement(ListItem, { primaryText: 'Inbox' }),
         React.createElement(ListItem, { primaryText: 'Starred' }),
         React.createElement(ListItem, { primaryText: 'Sent mail' }),
@@ -25253,7 +25254,7 @@ const LeftSide = React.createClass({
       React.createElement(ListDivider, null),
       React.createElement(
         List,
-        null,
+        { subheader: 'Other Channels' },
         React.createElement(ListItem, { primaryText: 'All mail' }),
         React.createElement(ListItem, { primaryText: 'Trash' }),
         React.createElement(ListItem, { primaryText: 'Spam' }),
@@ -25272,7 +25273,7 @@ const RightSide = React.createClass({
       { id: 'rightSide' },
       React.createElement(
         List,
-        null,
+        { subheader: 'Connected administrators' },
         React.createElement(ListItem, { primaryText: 'Inbox' }),
         React.createElement(ListItem, { primaryText: 'Starred' }),
         React.createElement(ListItem, { primaryText: 'Sent mail' }),
@@ -25282,7 +25283,7 @@ const RightSide = React.createClass({
       React.createElement(ListDivider, null),
       React.createElement(
         List,
-        null,
+        { subheader: 'Connected users' },
         React.createElement(ListItem, { primaryText: 'All mail' }),
         React.createElement(ListItem, { primaryText: 'Trash' }),
         React.createElement(ListItem, { primaryText: 'Spam' }),
@@ -25300,9 +25301,17 @@ const MainContent = React.createClass({
       'div',
       { id: 'mainContent' },
       React.createElement(
-        'p',
-        null,
-        'Am i the content ?'
+        'div',
+        { id: 'paperMaterial' },
+        React.createElement(
+          Paper,
+          { zDepth: 1 },
+          React.createElement(
+            'p',
+            null,
+            ' Am i the content ? '
+          )
+        )
       )
     );
   }
@@ -25337,4 +25346,4 @@ const MyPage = React.createClass({
 
 ReactDOM.render(React.createElement(MyPage, null), document.getElementById('content'));
 
-},{"material-ui/lib/app-bar":2,"material-ui/lib/lists/list":8,"material-ui/lib/lists/list-divider":6,"material-ui/lib/lists/list-item":7,"material-ui/lib/raised-button":13,"react":223,"react-dom":57,"react-tap-event-plugin":61}]},{},[224]);
+},{"material-ui/lib/app-bar":2,"material-ui/lib/lists/list":8,"material-ui/lib/lists/list-divider":6,"material-ui/lib/lists/list-item":7,"material-ui/lib/paper":12,"material-ui/lib/raised-button":13,"react":223,"react-dom":57,"react-tap-event-plugin":61}]},{},[224]);
